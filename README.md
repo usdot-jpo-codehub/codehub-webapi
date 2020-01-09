@@ -1,5 +1,5 @@
 # codehub-webapi
-CodeHub Web API to consume data from CodeHub ElasticSearch storage system.
+CodeHub Web API to consume data from CodeHub ElasticSearch storage system. 
 
 ## Usage
 Once the application is running on a configured port it is required to submit a GET request to retrieve a list of repositories or individual repository or a POST request to search for repositories.
