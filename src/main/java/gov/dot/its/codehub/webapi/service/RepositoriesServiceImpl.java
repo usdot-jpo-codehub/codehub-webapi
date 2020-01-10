@@ -151,6 +151,7 @@ public class RepositoriesServiceImpl implements RepositoriesService {
 		}
 	}
 
+	@SuppressWarnings({"squid:S3776"})
 	private CHMetrics calculateMetrics(List<CHRepository> repositories) {
 		if (repositories == null || repositories.isEmpty()) {
 			return null;
@@ -225,7 +226,7 @@ public class RepositoriesServiceImpl implements RepositoriesService {
 		for(Map.Entry<String, Integer> entry: metrics.getLanguageCountsStat().entrySet()) { totalLanguageCount += entry.getValue(); }
 		for(Map.Entry<String, Integer> entry: metrics.getLanguageCountsStat().entrySet()) {
 			int val = metrics.getLanguageCountsStat().get(entry.getKey());
-			float percentage = 100 * (val/(float)totalLanguageCount);
+			Float percentage = totalLanguageCount != 0 ? 100 * (val/(float)totalLanguageCount) : null;
 			metrics.getLanguagePercentageStat().put(entry.getKey(), percentage);
 		}
 

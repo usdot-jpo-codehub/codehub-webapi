@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@SuppressWarnings({"squid:S00116","squid:S00100","squid:S00117"})
 public class CHVScan {
 	private String data_scanned;
 	private long infected_files;

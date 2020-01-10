@@ -296,7 +296,10 @@ The API requires the following environment variables
 |codehub.webapi.es.host|mandatory||Sets the host of the target ElasticSearch|
 |codehub.webapi.es.port|mandatory||Sets the port that the target ElasticSearch is using.|
 |codehub.webapi.es.scheme|mandatory||Sets the protocol scheme used by the target ElasticSearch (http or https)|
+|datahub.ui.url.endpoint|mandatory||Sets the DataHub target URL ( http://[host]:[port] )|
+|datahub.ui.url.questring|optional|/search?t=|DataHub query string for the Search page.|
 |codehub.webapi.es.index.repositories|optional|repositories|Set the Index name to be used as main source of the data.|
+|codehub.webapi.es.related|optional|related|Set the Index name to be used as source of related DataHub information|
 |codehub.webapi.es.limit|optional|1000|Default limit in the number of documents read from ElasticSearch|
 |server.servlet.context-path|optional|/api|Set the CodeHub Web API context path|
 |server.port|optional|3000|Sets the CodeHub Web API listening port|
@@ -338,6 +341,7 @@ docker run -p 3000:3000 --rm \
 -e "codehub.webapi.es.host=[HOST]" \
 -e "codehub.webapi.es.port=[PORT]" \
 -e "codehub.webapi.es.scheme=[SCHEME]" \
+-e "datahub.ui.url.endpoint=[DATAHUB-WEBHOST]" \
 -e "JAVA_OPTS=-Xmx512M -Xms512M" \
 -t -i codehub-webapi:1.0.0
 ```

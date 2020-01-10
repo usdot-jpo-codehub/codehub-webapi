@@ -45,6 +45,8 @@ public class CodehubWebapiApplication {
 				out.println(String.format(MESSAGE_TEMPLATE, "Debug", environment.getProperty("codehub.webapi.debug")));
 				out.println(String.format(MESSAGE_TEMPLATE, "Tomcat.max-threads", environment.getProperty("server.tomcat.max-threads")));
 				out.println(String.format(MESSAGE_TEMPLATE, "Servlet.context-path", environment.getProperty("server.servlet.context-path")));
+				out.println(String.format(MESSAGE_TEMPLATE, "Related Index", environment.getProperty("codehub.webapi.es.related")));
+				out.println(String.format(MESSAGE_TEMPLATE, "DataHub EndPoint", environment.getProperty("datahub.ui.url.endpoint")));
 
 				out.println(new String(new char[80]).replace("\0", "_"));
 			}

@@ -1,6 +1,7 @@
 package gov.dot.its.codehub.webapi.dao;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -54,7 +55,7 @@ public class RelatedDaoImpl implements RelatedDao {
 			return relatedModel.getUrls();
 		}
 
-		return null;
+		return new ArrayList<>();
 	}
 
 	private void buildTargetUrls(RelatedModel relatedModel) {
