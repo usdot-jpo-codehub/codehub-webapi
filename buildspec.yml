@@ -4,9 +4,11 @@ phases:
   install:
     runtime-versions:
       docker: 18
+      java: openjdk8
     commands:
       - curl -fsSL https://raw.githubusercontent.com/usdot-jpo-codehub/aws-codebuild-extras/master/install >> extras.sh
       - . ./extras.sh
+      - mvn clean package sonar:sonar
   pre_build:
     commands:
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
