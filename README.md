@@ -346,7 +346,8 @@ docker run -p 3000:3000 --rm \
 ## Release History
 * 1.0.0
   * Initial version
-
+* 1.1.0
+  * Add related DataHub entries.
 
 ## Contact information
 Joe Doe : X@Y

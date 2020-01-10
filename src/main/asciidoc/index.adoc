@@ -5,16 +5,18 @@
 = ITS CodeHub
 
 == Web API
-`version: 1.0.0`
+`version: 1.1.0`
 
 WebApi to interface ITS CodeHub https://www.elastic.co/products/enterprise-search[ElasticSearch] storage system.
 
 
 === Change Log
- Initial version.
+The changes are with reference to previous version
+ 
+`Previous version: 1.0.0`
 
-
-
+* Addition of **related** property to the CHRepository structure of type _List<RelatedItemModel>_.
+* Addition of structure **RelatedItemModel** that contains the information of the related project in DataHub.
 
 The information is presented through an structure (CHRepository) that contains the following properties.
 
@@ -29,6 +31,7 @@ The information is presented through an structure (CHRepository) that contains t
 |generatedData   |*CHGeneratedData*   |Holds the generated information like virus scan results and static code analysis.
 |codehubData   |*CHCodehubData*   |Contains the information related to the repository management, this information is consider internal to CodeHub.
 |highlights   |Map<String, List<String>>   |Stores the highlights information returned by the search results.
+|related   |List<RelatedItemModel>   |List of related DataHub items
 |===
 
 - - -
@@ -228,6 +231,28 @@ The information is presented through an structure (CHRepository) that contains t
 //-------------
 |featured|boolean|Flag that indicates whether the repository is mark as featured
 |status|String|Status of the repository (Active, Inactive, Read-Only, Pending)
+|===
+
+=== RelatedModel
+
+[options="header",cols="1,1,2"]
+|===
+|Name   |Type   |Description
+//-------------
+|id|String|Unique id
+|name|String|Name of the related information structure
+|urls|List<**RelatedItemModel**>|List of related DataHub items
+|===
+
+=== RelatedItemModel
+
+[options="header",cols="1,1,2"]
+|===
+|Name   |Type   |Description
+//-------------
+|id|String|Unique id
+|name|String|Name of a related item
+|url|String|Target URL for the related item
 |===
 
 Three types of requests are defined:
