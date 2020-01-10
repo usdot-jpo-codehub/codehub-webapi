@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.2.2.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
+		<!-- lookup parent from repository -->
 	</parent>
 	<groupId>gov.dot.its.codehub</groupId>
 	<artifactId>codehub-webapi</artifactId>
@@ -16,6 +17,14 @@
 
 	<properties>
 		<java.version>1.8</java.version>
+
+		<sonar.projectKey>usdot-jpo-codehub_codehub-webapi</sonar.projectKey>
+		<sonar.organization>usdot-jpo-codehub</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		<sonar.login>${env.SONAR_TOKEN}</sonar.login>
+		<sonar.branch.name>${env.CODEBUILD_GIT_BRANCH}</sonar.branch.name>
+		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+
 	</properties>
 
 	<dependencies>
@@ -101,6 +110,25 @@
 								</resource>
 							</resources>
 						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.2</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>
