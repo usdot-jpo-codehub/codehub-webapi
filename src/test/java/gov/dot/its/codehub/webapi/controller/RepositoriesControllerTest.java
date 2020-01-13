@@ -46,7 +46,6 @@ import gov.dot.its.codehub.webapi.model.CHBadges;
 import gov.dot.its.codehub.webapi.model.CHCodehubData;
 import gov.dot.its.codehub.webapi.model.CHContributor;
 import gov.dot.its.codehub.webapi.model.CHFork;
-import gov.dot.its.codehub.webapi.model.CHForks;
 import gov.dot.its.codehub.webapi.model.CHGeneratedData;
 import gov.dot.its.codehub.webapi.model.CHMetrics;
 import gov.dot.its.codehub.webapi.model.CHMetricsSummary;
@@ -595,7 +594,7 @@ class RepositoriesControllerTest {
 		int size = this.random.nextInt(100);
 		vscan.setData_scanned(String.format("%s MB", size));
 		vscan.setInfected_files(1);
-		vscan.setLastscan(new Date());
+		vscan.setLastScan(new Date());
 		List<CHReportedFiles> reported_files = new ArrayList<>();
 		CHReportedFiles reportedFiles = new CHReportedFiles();
 		reportedFiles.setFilename(String.format("filename%s", this.random.nextInt(1000)));
@@ -627,15 +626,13 @@ class RepositoriesControllerTest {
 		sourceData.setCreatedAt(new Date());
 		sourceData.setDescription("Description of the repository");
 
-		CHForks forks = new CHForks();
-		List<CHFork> forkList = new ArrayList<>();
+		List<CHFork> forks = new ArrayList<>();
 		CHFork fork = new CHFork();
 		int forkId = this.random.nextInt(11);
 		fork.setId(String.valueOf(forkId));
 		fork.setName(String.format("%s%s", name, forkId));
 		fork.setOwner("fork-owner");
-		forkList.add(fork);
-		forks.setForkedRepos(forkList);
+		forks.add(fork);
 		sourceData.setForks(forks);
 
 		sourceData.setLanguage(PROGRAMMING_LANGUAGE);

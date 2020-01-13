@@ -18,7 +18,7 @@ public class CHSourceData {
 	private Date lastPush;
 	private CHOwner owner;
 	private CHReadme readme;
-	private CHForks forks;
+	private List<CHFork> forks;
 	private List<CHContributor> contributors;
 	private List<CHRelease> releases;
 	private Map<String, Long> languages;
@@ -26,7 +26,7 @@ public class CHSourceData {
 	public CHSourceData() {
 		this.owner = new CHOwner();
 		this.readme = new CHReadme();
-		this.forks = new CHForks();
+		this.forks = new ArrayList<>();
 		this.contributors = new ArrayList<>();
 		this.releases = new ArrayList<>();
 		this.languages = new HashMap<>();
@@ -128,12 +128,11 @@ public class CHSourceData {
 		this.contributors = contributors;
 	}
 
-	
-	public CHForks getForks() {
+	public List<CHFork> getForks() {
 		return forks;
 	}
 
-	public void setForks(CHForks forks) {
+	public void setForks(List<CHFork> forks) {
 		this.forks = forks;
 	}
 

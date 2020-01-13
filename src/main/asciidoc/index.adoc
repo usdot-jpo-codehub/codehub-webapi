@@ -53,7 +53,7 @@ The information is presented through an structure (CHRepository) that contains t
 |lastPush|Date|Date of last change
 |owner|*CHOwner*|Structure that holds owner information
 |readme|*CHReadme*|Structure that contains the readme information
-|forks|*CHForks*|Structure that has the *forks* information
+|forks|List< *CHFork*>|List of forks
 |contributors|List< *CHContributor*>|List of contributors
 |releases|List< *CHRelease*>|List of releases
 |languages|Map<String, Long>|Collection of programming languages used in the repository
@@ -79,15 +79,6 @@ The information is presented through an structure (CHRepository) that contains t
 //-------------
 |content|String|Holds the content of the README file
 |url|String|URL to the README file
-|===
-
-=== CHForks
-
-[options="header",cols="1,1,2"]
-|===
-|Name   |Type   |Description
-//-------------
-|forkedRepos|List< *CHFork*>|List of *forks*
 |===
 
 === CHFork
