@@ -16,7 +16,6 @@ import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
@@ -49,6 +48,8 @@ public class RepositoriesDaoImpl implements RepositoriesDao {
 	private static final String HIGHLIGHTER_TYPE = "plain";
 	private static final int FRAGMENT_SIZE = 5000;
 	private static final int NUMBER_OF_FRAGMENTS = 5;
+	private static final String CODEHUBDATA_IS_INGESTED = "codehubData.isIngested";
+	private static final String CODEHUBDATA_IS_VISIBLE = "codehubData.isVisible";
 
 	private RestHighLevelClient restHighLevelClient;
 
@@ -58,9 +59,11 @@ public class RepositoriesDaoImpl implements RepositoriesDao {
 
 	@Override
 	public List<CHRepository> getRepositories(int limit, String rank, String owner, String order) throws IOException {
+		List<CHRepository> result = new ArrayList<>();
 		SearchRequest searchRequest = new SearchRequest(reposIndex);
 		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 		searchSourceBuilder.size(limit);
+		searchSourceBuilder.fetchSource(includedFields, new String[] {});
 
 		QueryBuilder queryBuilder = this.generateQuery(rank, owner);
 		searchSourceBuilder.query(queryBuilder);
@@ -70,17 +73,9 @@ public class RepositoriesDaoImpl implements RepositoriesDao {
 			searchSourceBuilder.sort(sortBuilder);
 		}
 
-		searchSourceBuilder.fetchSource(includedFields, new String[] {});
 		searchRequest.source(searchSourceBuilder);
-
-		SearchResponse searchResponse = null;
-
-		searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
-		SearchHits hits = searchResponse.getHits();
-
-		SearchHit[] searchHits = hits.getHits();
-
-		List<CHRepository> result = new ArrayList<>();
+		SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+		SearchHit[] searchHits = searchResponse.getHits().getHits();
 		for (SearchHit hit : searchHits) {
 			Map<String, Object> sourceAsMap = hit.getSourceAsMap();
 
@@ -122,8 +117,8 @@ public class RepositoriesDaoImpl implements RepositoriesDao {
 	}
 
 	private QueryBuilder generateQuery(String rank, String owner) {
-		QueryBuilder isIngestedQueryBuilder = QueryBuilders.termQuery("codehubData.isIngested", true);
-		QueryBuilder isVisibleQueryBuilder = QueryBuilders.termQuery("codehubData.isVisible", true);
+		QueryBuilder isIngestedQueryBuilder = QueryBuilders.termQuery(CODEHUBDATA_IS_INGESTED, true);
+		QueryBuilder isVisibleQueryBuilder = QueryBuilders.termQuery(CODEHUBDATA_IS_VISIBLE, true);
 		if (StringUtils.isEmpty(rank) && StringUtils.isEmpty(owner)) {
 			return QueryBuilders.boolQuery()
 					.must(isIngestedQueryBuilder)
@@ -142,7 +137,7 @@ public class RepositoriesDaoImpl implements RepositoriesDao {
 					.must(isVisibleQueryBuilder)
 					.must(isIngestedQueryBuilder)
 					.must(rankQuery);
-		} else if (rankQuery == null && ownerQuery != null) {
+		} else if (rankQuery == null) {
 			return QueryBuilders.boolQuery()
 					.must(isVisibleQueryBuilder)
 					.must(isIngestedQueryBuilder)
@@ -200,9 +195,8 @@ public class RepositoriesDaoImpl implements RepositoriesDao {
 
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		CHRepository chRepository = mapper.convertValue(sourceAsMap, CHRepository.class);
 
-		return chRepository;
+		return mapper.convertValue(sourceAsMap, CHRepository.class);
 	}
 
 	@Override
@@ -213,16 +207,11 @@ public class RepositoriesDaoImpl implements RepositoriesDao {
 
 		QueryBuilder queryBuilder = this.generateQueryForOwners(owners);
 		searchSourceBuilder.query(queryBuilder);
-
 		searchSourceBuilder.fetchSource(includedFieldsMetrics, new String[] {});
 		searchRequest.source(searchSourceBuilder);
 
-		SearchResponse searchResponse = null;
-
-		searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
-		SearchHits hits = searchResponse.getHits();
-
-		SearchHit[] searchHits = hits.getHits();
+		SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+		SearchHit[] searchHits = searchResponse.getHits().getHits();
 
 		List<CHRepository> result = new ArrayList<>();
 		for (SearchHit hit : searchHits) {
@@ -238,8 +227,8 @@ public class RepositoriesDaoImpl implements RepositoriesDao {
 	}
 
 	private QueryBuilder generateQueryForOwners(String[] owners) {
-		QueryBuilder isIngestedQueryBuilder = QueryBuilders.termQuery("codehubData.isIngested", true);
-		QueryBuilder isVisibleQueryBuilder = QueryBuilders.termQuery("codehubData.isVisible", true);
+		QueryBuilder isIngestedQueryBuilder = QueryBuilders.termQuery(CODEHUBDATA_IS_INGESTED, true);
+		QueryBuilder isVisibleQueryBuilder = QueryBuilders.termQuery(CODEHUBDATA_IS_VISIBLE, true);
 		if (owners == null || owners.length==0) {
 			return QueryBuilders.boolQuery()
 					.must(isIngestedQueryBuilder)
@@ -262,19 +251,13 @@ public class RepositoriesDaoImpl implements RepositoriesDao {
 		QueryBuilder queryBuilder = this.generateSearchQuery(chSearchRequest);
 		searchSourceBuilder.query(queryBuilder);
 
-		HighlightBuilder highlightBuilder = this.generateHighlightBuilder();
-
-		searchSourceBuilder.highlighter(highlightBuilder);
-
 		searchSourceBuilder.fetchSource(includedFields, new String[] {});
+		HighlightBuilder highlightBuilder = this.generateHighlightBuilder();
+		searchSourceBuilder.highlighter(highlightBuilder);
 		searchRequest.source(searchSourceBuilder);
 
-		SearchResponse searchResponse = null;
-
-		searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
-		SearchHits hits = searchResponse.getHits();
-
-		SearchHit[] searchHits = hits.getHits();
+		SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+		SearchHit[] searchHits = searchResponse.getHits().getHits();
 
 		List<CHRepository> result = new ArrayList<>();
 		for (SearchHit hit : searchHits) {
@@ -305,8 +288,8 @@ public class RepositoriesDaoImpl implements RepositoriesDao {
 	}
 
 	private QueryBuilder generateSearchQuery(CHSearchRequest chSearchRequest) {
-		QueryBuilder isIngestedQueryBuilder = QueryBuilders.termQuery("codehubData.isIngested", true);
-		QueryBuilder isVisibleQueryBuilder = QueryBuilders.termQuery("codehubData.isVisible", true);
+		QueryBuilder isIngestedQueryBuilder = QueryBuilders.termQuery(CODEHUBDATA_IS_INGESTED, true);
+		QueryBuilder isVisibleQueryBuilder = QueryBuilders.termQuery(CODEHUBDATA_IS_VISIBLE, true);
 		if (StringUtils.isEmpty(chSearchRequest.getTerm())) {
 			return QueryBuilders.boolQuery()
 					.must(isVisibleQueryBuilder)

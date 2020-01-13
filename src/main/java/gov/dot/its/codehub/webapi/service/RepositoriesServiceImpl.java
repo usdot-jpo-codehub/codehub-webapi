@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import gov.dot.its.codehub.webapi.dao.RelatedDao;
 import gov.dot.its.codehub.webapi.dao.RepositoriesDao;
 import gov.dot.its.codehub.webapi.model.ApiError;
 import gov.dot.its.codehub.webapi.model.ApiMessage;
@@ -25,6 +26,7 @@ import gov.dot.its.codehub.webapi.model.CHMetrics;
 import gov.dot.its.codehub.webapi.model.CHRepository;
 import gov.dot.its.codehub.webapi.model.CHSearchRequest;
 import gov.dot.its.codehub.webapi.model.CHSonarMetrics;
+import gov.dot.its.codehub.webapi.model.RelatedItemModel;
 import gov.dot.its.codehub.webapi.utils.ApiUtils;
 
 @Service
@@ -42,6 +44,9 @@ public class RepositoriesServiceImpl implements RepositoriesService {
 
 	@Autowired
 	private RepositoriesDao repositoriesDao;
+
+	@Autowired
+	private RelatedDao relatedDao;
 
 	@Override
 	public ApiResponse<List<CHRepository>> getRepositories(HttpServletRequest request, Map<String, String> params) {
@@ -92,6 +97,9 @@ public class RepositoriesServiceImpl implements RepositoriesService {
 				if(repository != null) {
 					logger.info(String.format(MESSAGE_TEMPLATE, HttpStatus.OK, id));
 					messages.add(new ApiMessage(String.format(MESSAGE_TEMPLATE, HttpStatus.OK, id)));
+
+					repository.setRelated(this.getRelatedInformation(id));
+
 					repositories.add(repository);
 				} else {
 					partialContent = true;
@@ -114,6 +122,7 @@ public class RepositoriesServiceImpl implements RepositoriesService {
 		return apiResponse.setResponse(httpStatus, repositories, messages, errors, request);
 
 	}
+
 
 	@Override
 	public ApiResponse<CHMetrics> getMetrics(HttpServletRequest request, String[] owners) {
@@ -142,6 +151,7 @@ public class RepositoriesServiceImpl implements RepositoriesService {
 		}
 	}
 
+	@SuppressWarnings({"squid:S3776"})
 	private CHMetrics calculateMetrics(List<CHRepository> repositories) {
 		if (repositories == null || repositories.isEmpty()) {
 			return null;
@@ -162,7 +172,7 @@ public class RepositoriesServiceImpl implements RepositoriesService {
 		float bugsAndVulnerabilities = 0;
 		int numberOfProjects = 0;
 		for(CHRepository repository: repositories) {
-			
+
 			numberOfProjects += 1;
 			//Gets unique organizations/owners
 			if (!metrics.getOrganizations().contains(repository.getSourceData().getOwner().getName())) {
@@ -216,7 +226,7 @@ public class RepositoriesServiceImpl implements RepositoriesService {
 		for(Map.Entry<String, Integer> entry: metrics.getLanguageCountsStat().entrySet()) { totalLanguageCount += entry.getValue(); }
 		for(Map.Entry<String, Integer> entry: metrics.getLanguageCountsStat().entrySet()) {
 			int val = metrics.getLanguageCountsStat().get(entry.getKey());
-			float percentage = 100 * (val/(float)totalLanguageCount);
+			Float percentage = totalLanguageCount != 0 ? 100 * (val/(float)totalLanguageCount) : null;
 			metrics.getLanguagePercentageStat().put(entry.getKey(), percentage);
 		}
 
@@ -234,7 +244,7 @@ public class RepositoriesServiceImpl implements RepositoriesService {
 		List<ApiError> errors = new ArrayList<>();
 		List<ApiMessage> messages = new ArrayList<>();
 		logger.info("Search request");
-		
+
 		if (StringUtils.isEmpty(chSearchRequest.getTerm())) {
 			String msg = String.format(MESSAGE_TEMPLATE, HttpStatus.NO_CONTENT, "Empty search term");
 			logger.info(msg);
@@ -257,6 +267,16 @@ public class RepositoriesServiceImpl implements RepositoriesService {
 			logger.info(String.format(MESSAGE_TEMPLATE, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
 			return apiResponse.setResponse(HttpStatus.INTERNAL_SERVER_ERROR, null, null, apiUtils.getErrorsFromException(errors, e), request);
 		}
+	}
+
+	private List<RelatedItemModel> getRelatedInformation(String id) {
+		List<RelatedItemModel> relatedItems = new ArrayList<>();
+		try {
+			relatedItems = relatedDao.getRelatedItems(id);
+		} catch (IOException e) {
+			logger.error(e.getMessage());
+		}
+		return relatedItems;
 	}
 
 }

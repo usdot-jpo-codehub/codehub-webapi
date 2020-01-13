@@ -1,5 +1,6 @@
 package gov.dot.its.codehub.webapi.model;
 
+@SuppressWarnings({"squid:S00116","squid:S00100","squid:S00117"})
 public class CHSonarMetric {
 	private String frmt_val;
 	private String key;

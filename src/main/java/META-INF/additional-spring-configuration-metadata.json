@@ -33,5 +33,20 @@
     "name": "codehub.webapi.es.metrics.fields",
     "type": "java.lang.String",
     "description": "A description for 'codehub.webapi.es.metrics.fields'"
+  },
+  {
+    "name": "codehub.webapi.es.related",
+    "type": "java.lang.String",
+    "description": "A description for 'codehub.webapi.es.related'"
+  },
+  {
+    "name": "datahub.ui.url.endpoint",
+    "type": "java.lang.String",
+    "description": "A description for 'datahub.ui.url.endpoint'"
+  },
+  {
+    "name": "datahub.ui.url.questring",
+    "type": "java.lang.String",
+    "description": "A description for 'datahub.ui.url.questring'"
   }
 ]}

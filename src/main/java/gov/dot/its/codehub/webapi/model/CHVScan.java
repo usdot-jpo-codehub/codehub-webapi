@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@SuppressWarnings({"squid:S00116","squid:S00100","squid:S00117"})
 public class CHVScan {
 	private String data_scanned;
 	private long infected_files;
-	private Date lastscan;
+	private Date lastScan;
 	private long scanned_directories;
 	private long scanned_files;
 	private String time;
@@ -29,11 +30,11 @@ public class CHVScan {
 	public void setInfected_files(long infected_files) {
 		this.infected_files = infected_files;
 	}
-	public Date getLastscan() {
-		return lastscan;
+	public Date getLastScan() {
+		return lastScan;
 	}
-	public void setLastscan(Date lastscan) {
-		this.lastscan = lastscan;
+	public void setLastScan(Date lastScan) {
+		this.lastScan = lastScan;
 	}
 	public long getScanned_directories() {
 		return scanned_directories;

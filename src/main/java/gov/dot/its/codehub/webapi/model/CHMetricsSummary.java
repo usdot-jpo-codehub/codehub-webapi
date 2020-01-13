@@ -8,10 +8,10 @@ public class CHMetricsSummary {
 	private CHMetricsSummaryBase<Long> maintainability;
 
 	public CHMetricsSummary() {
-		this.releasibility = new CHMetricsSummaryBase<Long>();
-		this.reliability = new CHMetricsSummaryBase<Long>();
-		this.security = new CHMetricsSummaryBase<Long>();
-		this.maintainability = new CHMetricsSummaryBase<Long>();
+		this.releasibility = new CHMetricsSummaryBase<>();
+		this.reliability = new CHMetricsSummaryBase<>();
+		this.security = new CHMetricsSummaryBase<>();
+		this.maintainability = new CHMetricsSummaryBase<>();
 	}
 
 	public CHMetricsSummaryBase<Long> getReleasibility() {
