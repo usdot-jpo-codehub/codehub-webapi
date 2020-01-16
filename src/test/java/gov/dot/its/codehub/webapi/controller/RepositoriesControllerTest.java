@@ -680,6 +680,7 @@ class RepositoriesControllerTest {
 		sourceData.setRepositoryUrl(String.format("http://%s/%s.url", ownerName, name));
 		sourceData.setStars(this.random.nextInt(5000));
 		sourceData.setWatchers(this.random.nextInt(1000));
+		sourceData.setDefaultBranch("master");
 		return sourceData;
 	}
 

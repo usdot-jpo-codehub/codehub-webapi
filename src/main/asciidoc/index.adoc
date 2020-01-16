@@ -17,6 +17,7 @@ The changes are with reference to previous version
 
 * Addition of **related** property to the CHRepository structure of type _List<RelatedItemModel>_.
 * Addition of structure **RelatedItemModel** that contains the information of the related project in DataHub.
+* Addition of **defaultBranch** property to CHSourceData structure of type String.
 
 The information is presented through an structure (CHRepository) that contains the following properties.
 
@@ -49,6 +50,7 @@ The information is presented through an structure (CHRepository) that contains t
 |language|String|Main programming language
 |name|String|Repository name
 |repositoryUrl|String|Repository URL
+|defaultBranch|String|Source branch for the repository
 |createdAt|Date|Creation date
 |lastPush|Date|Date of last change
 |owner|*CHOwner*|Structure that holds owner information
