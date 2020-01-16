@@ -14,6 +14,7 @@ public class CHSourceData {
 	private String language;
 	private String name;
 	private String repositoryUrl;
+	private String defaultBranch;
 	private Date createdAt;
 	private Date lastPush;
 	private CHOwner owner;
@@ -86,6 +87,14 @@ public class CHSourceData {
 
 	public void setRepositoryUrl(String repositoryUrl) {
 		this.repositoryUrl = repositoryUrl;
+	}
+
+	public String getDefaultBranch() {
+		return defaultBranch;
+	}
+
+	public void setDefaultBranch(String defaultBranch) {
+		this.defaultBranch = defaultBranch;
 	}
 
 	public Date getCreatedAt() {
