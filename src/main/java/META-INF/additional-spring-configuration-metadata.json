@@ -1,0 +1,52 @@
+{"properties": [
+  {
+    "name": "codehub.webapi.es.host",
+    "type": "java.lang.String",
+    "description": "A description for 'codehub.webapi.es.host'"
+  },
+  {
+    "name": "codehub.webapi.es.port",
+    "type": "java.lang.String",
+    "description": "A description for 'codehub.webapi.es.port'"
+  },
+  {
+    "name": "codehub.webapi.es.scheme",
+    "type": "java.lang.String",
+    "description": "A description for 'codehub.webapi.es.scheme'"
+  },
+  {
+    "name": "codehub.webapi.es.limit",
+    "type": "java.lang.String",
+    "description": "A description for 'codehub.webapi.es.limit'"
+  },
+  {
+    "name": "codehub.webapi.es.index.repositories",
+    "type": "java.lang.String",
+    "description": "A description for 'codehub.webapi.es.index.repositories'"
+  },
+  {
+    "name": "codehub.webapi.es.repositories.fields",
+    "type": "java.lang.String",
+    "description": "A description for 'codehub.webapi.es.repositories.fields'"
+  },
+  {
+    "name": "codehub.webapi.es.metrics.fields",
+    "type": "java.lang.String",
+    "description": "A description for 'codehub.webapi.es.metrics.fields'"
+  },
+  {
+    "name": "codehub.webapi.es.related",
+    "type": "java.lang.String",
+    "description": "A description for 'codehub.webapi.es.related'"
+  },
+  {
+    "name": "datahub.ui.url.endpoint",
+    "type": "java.lang.String",
+    "description": "A description for 'datahub.ui.url.endpoint'"
+  },
+  {
+    "name": "datahub.ui.url.questring",
+    "type": "java.lang.String",
+    "description": "A description for 'datahub.ui.url.questring'"
+  }
+]}

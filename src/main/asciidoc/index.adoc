@@ -1,0 +1,346 @@
+:toc: left
+:toclevels: 4
+
+
+= ITS CodeHub
+
+== Web API
+`version: 1.1.0`
+
+WebApi to interface ITS CodeHub https://www.elastic.co/products/enterprise-search[ElasticSearch] storage system.
+
+
+=== Change Log
+The changes are with reference to previous version
+ 
+`Previous version: 1.0.0`
+
+* Addition of **related** property to the CHRepository structure of type _List<RelatedItemModel>_.
+* Addition of structure **RelatedItemModel** that contains the information of the related project in DataHub.
+* Addition of **defaultBranch** property to CHSourceData structure of type String.
+
+The information is presented through an structure (CHRepository) that contains the following properties.
+
+=== CHRepository
+
+[options="header",cols="1,1,2"]
+|===
+|Name   |Type   |Description
+//-------------
+|id   |String   |Repository ID
+|sourceData   |*CHSourceData*   |Structure that contains the information provided by the source.
+|generatedData   |*CHGeneratedData*   |Holds the generated information like virus scan results and static code analysis.
+|codehubData   |*CHCodehubData*   |Contains the information related to the repository management, this information is consider internal to CodeHub.
+|highlights   |Map<String, List<String>>   |Stores the highlights information returned by the search results.
+|related   |List<RelatedItemModel>   |List of related DataHub items
+|===
+
+- - -
+
+=== CHSourceData
+
+[options="header",cols="1,1,2"]
+|===
+|Name   |Type   |Description
+//-------------
+|commits|long|Number of commits
+|stars|long|Number of Github starts
+|watchers|long|Number of Watchers
+|description|String|Description of the repository
+|language|String|Main programming language
+|name|String|Repository name
+|repositoryUrl|String|Repository URL
+|defaultBranch|String|Source branch for the repository
+|createdAt|Date|Creation date
+|lastPush|Date|Date of last change
+|owner|*CHOwner*|Structure that holds owner information
+|readme|*CHReadme*|Structure that contains the readme information
+|forks|List< *CHFork*>|List of forks
+|contributors|List< *CHContributor*>|List of contributors
+|releases|List< *CHRelease*>|List of releases
+|languages|Map<String, Long>|Collection of programming languages used in the repository
+|===
+
+=== CHOwner
+
+[options="header",cols="1,1,2"]
+|===
+|Name   |Type   |Description
+//-------------
+|avatarUrl|String|URL to the avatar image of the owner
+|name|String|Owner name
+|type|String|Type of owner (organization, individual)
+|url|String|Owner's url
+|===
+
+=== CHReadme
+
+[options="header",cols="1,1,2"]
+|===
+|Name   |Type   |Description
+//-------------
+|content|String|Holds the content of the README file
+|url|String|URL to the README file
+|===
+
+=== CHFork
+
+[options="header",cols="1,1,2"]
+|===
+|Name   |Type   |Description
+//-------------
+|id|String|ID of the fork
+|name|String|Fork name
+|owner|String|Owner of the fork
+|===
+
+=== CHContributor
+
+[options="header",cols="1,1,2"]
+|===
+|Name   |Type   |Description
+//-------------
+|avatarUrl|String|Contributor's avatar URL
+|profileUrl|String|Profile URL
+|userType|String|Type of user (User, Organization)
+|username|String|Name of the user
+|===
+
+=== CHRelease
+
+[options="header",cols="1,1,2"]
+|===
+|Name   |Type   |Description
+//-------------
+|id|String|Release ID
+|tagName|String|Tag name
+|name|String|Release name
+|totalDownloads|long|Total number of downloads
+|assets|List< *CHAsset*>|Release assets
+|===
+
+=== CHAsset
+
+[options="header",cols="1,1,2"]
+|===
+|Name   |Type   |Description
+//-------------
+|id|String|Asset ID
+|name|String|Asset name
+|label|String|Label
+|size|long|Asset size in bytes
+|downloadCount|long|Number of download for this asset
+|===
+
+- - -
+
+=== CHGeneratedData
+
+[options="header",cols="1,1,2"]
+|===
+|Name   |Type   |Description
+//-------------
+|rank|long|Repository rank value
+|sonarMetrics| *CHSonarMetrics* |Static code analysis metrics (SonarQube)
+|vscan| *CHVScan* |Virus scan results
+|===
+
+=== CHSonarMetrics
+
+[options="header",cols="1,1,2"]
+|===
+|Name   |Type   |Description
+//-------------
+|bugs| *CHSonarMetric*|Bugs metrics
+|code_smells| *CHSonarMetric*|Code smells
+|reliability_rating| *CHSonarMetric*|Reliability
+|security_rating| *CHSonarMetric*|Security
+|sqale_index| *CHSonarMetric*|Techinical Debt
+|sqale_rating| *CHSonarMetric*|Maintainability
+|violations| *CHSonarMetric*|Code issues
+|vulnerabilities| *CHSonarMetric*|Vulnerability
+|complexity| *CHSonarMetric*|Cyclomatic complexity
+|===
+
+=== CHSonarMetric
+
+[options="header",cols="1,1,2"]
+|===
+|Name   |Type   |Description
+//-------------
+|frmt_val|String|Formated value
+|key|String|Metric key
+|val|float|Metric value
+|===
+
+=== CHVScan
+
+[options="header",cols="1,1,2"]
+|===
+|Name   |Type   |Description
+//-------------
+|String|data_scanned|Size of the scanned data in text format
+|long|infected_files|Number of infected files
+|Date|lastscan|Last scanned time
+|long|scanned_directories|Number of scanned directories
+|long|scanned_files|Number of the scanned files
+|String|time|Time that took to scan the files
+|List< *CHReportedFiles*>|reported_files|List of files where virus were found
+|===
+
+=== CHReportedFiles
+
+[options="header",cols="1,1,2"]
+|===
+|Name   |Type   |Description
+//-------------
+|filename|String|File name
+|virus|String|Name of the virus
+|===
+
+- - - 
+
+=== CHCodehubData
+
+[options="header",cols="1,1,2"]
+|===
+|Name   |Type   |Description
+//-------------
+|etag|String|Latest hash tag that indicates that the repository was modified
+|isVisible|boolean|Flag that is used to show the image in the user interface
+|isIngested|boolean|Flag that indicates that the repository was ingested
+|isIngestionEnabled|boolean|Flag that indicates that the repository is ready to be ingested
+|source|String|Name of the system where the repository is stored (Github)
+|lastModified|Date|Date of the last modified date
+|lastIngested|Date|Date of the last time that the repository was ingested
+|badges|*CHBadges*|Repository badges
+|===
+
+=== CHBadges
+
+[options="header",cols="1,1,2"]
+|===
+|Name   |Type   |Description
+//-------------
+|featured|boolean|Flag that indicates whether the repository is mark as featured
+|status|String|Status of the repository (Active, Inactive, Read-Only, Pending)
+|===
+
+=== RelatedModel
+
+[options="header",cols="1,1,2"]
+|===
+|Name   |Type   |Description
+//-------------
+|id|String|Unique id
+|name|String|Name of the related information structure
+|urls|List<**RelatedItemModel**>|List of related DataHub items
+|===
+
+=== RelatedItemModel
+
+[options="header",cols="1,1,2"]
+|===
+|Name   |Type   |Description
+//-------------
+|id|String|Unique id
+|name|String|Name of a related item
+|url|String|Target URL for the related item
+|===
+
+Three types of requests are defined:
+
+	* *repositories*
+
+		** URL: http://[host:port]/api/v1/repositories
+		*** http://[host:port]/api/v1/repositories/{Id1,Id2...,Id(n)}
+		** Method: GET
+		
+	* *metrics*
+
+		** URL: http://[host:port]/api/v1/metrics
+		*** http://[host:port]/api/v1/metrics/{Owner1,Owner2...,Owner(n)}
+		** Method: GET
+
+	* *search*
+
+		** URL: http://[host:port]/api/v1/search
+		** Method: POST
+
+=== Repositories
+Gets a list of all the Data Assets
+
+==== Query string parameters
+
+	* *limit* : Sets the number of records to return (default: 1000).
+	* *rank* : Returns the Repositories ranked by one of the following values.
+		** popular : Gets repositories that has the property "GeneratedData.rank" in descending order.
+		** featured : Gets repositories that has the property "CodehubData.featured" order by "GeneratedData.rank" in descending order.
+		** healthiest : Gets the healthiest repositories base on "GeneratedData.SonarMetrics".
+	* *order* : Sets the sort order of the query, the accepted values are: "asc" and "desc".
+	* *owner* : Filter the query result to a given "owner" name.
+	
+	http://example.com:3000/api/v1/repositories?limit=100&rank=popular&order=desc&owner=jpo-ode
+
+==== Request
+include::{snippets}/api/v1/repositories/data/http-request.adoc[]
+
+===== cURL Sample
+include::{snippets}/api/v1/repositories/data/curl-request.adoc[]
+
+
+==== Response
+
+===== Data available
+include::{snippets}/api/v1/repositories/data/http-response.adoc[]
+
+===== No data available
+include::{snippets}/api/v1/repositories/no-data/http-response.adoc[]
+
+===== Error
+include::{snippets}/api/v1/repositories/error/http-response.adoc[]
+
+- - - 
+
+=== Metrics
+Gets the Metrics aggregation for all the repositories or in case that the owner names are provided then the aggregation will be calculate for those owners.
+
+	http://example.com:3000/api/v1/metrics/{owner1, owner2, ...,owner(n)}
+
+==== Request
+include::{snippets}/api/v1/metrics/data/http-request.adoc[]
+
+===== cURL Sample
+include::{snippets}/api/v1/metrics/data/curl-request.adoc[]
+
+
+==== Response
+
+===== Data available
+include::{snippets}/api/v1/metrics/data/http-response.adoc[]
+
+===== No data available
+include::{snippets}/api/v1/metrics/no-data/http-response.adoc[]
+
+===== Error
+include::{snippets}/api/v1/metrics/error/http-response.adoc[]
+
+=== Search
+Search for words with operator with the option to match all the words or not.
+
+==== Request
+include::{snippets}/api/v1/search/data/http-request.adoc[]
+
+==== cURL Sample
+include::{snippets}/api/v1/search/data/curl-request.adoc[]
+
+==== Response
+
+===== Data available
+include::{snippets}/api/v1/search/data/http-response.adoc[]
+
+===== No data avilable
+include::{snippets}/api/v1/search/no-data/http-response.adoc[]
+
+===== Error
+include::{snippets}/api/v1/search/error/http-response.adoc[]
