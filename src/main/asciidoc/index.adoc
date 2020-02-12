@@ -5,7 +5,7 @@
 = ITS CodeHub
 
 == Web API
-`version: 1.1.0`
+`version: 1.2.0`
 
 WebApi to interface ITS CodeHub https://www.elastic.co/products/enterprise-search[ElasticSearch] storage system.
 
@@ -13,11 +13,10 @@ WebApi to interface ITS CodeHub https://www.elastic.co/products/enterprise-searc
 === Change Log
 The changes are with reference to previous version
  
-`Previous version: 1.0.0`
+`Previous version: 1.1.0`
 
-* Addition of **related** property to the CHRepository structure of type _List<RelatedItemModel>_.
-* Addition of structure **RelatedItemModel** that contains the information of the related project in DataHub.
-* Addition of **defaultBranch** property to CHSourceData structure of type String.
+* Addition of **configurations** end point, that provides the option of getting the list of **categories** or a single category identified by its ID (see: **CHCategory**).
+* Addition of **categories** to **CHCodehubData**
 
 The information is presented through an structure (CHRepository) that contains the following properties.
 
@@ -214,6 +213,7 @@ The information is presented through an structure (CHRepository) that contains t
 |lastModified|Date|Date of the last modified date
 |lastIngested|Date|Date of the last time that the repository was ingested
 |badges|*CHBadges*|Repository badges
+|categories|List<**CHCategory**>|List of categories IDs
 |===
 
 === CHBadges
@@ -248,7 +248,31 @@ The information is presented through an structure (CHRepository) that contains t
 |url|String|Target URL for the related item
 |===
 
-Three types of requests are defined:
+=== CHConfiguration
+
+[options="header",cols="1,1,2"]
+|===
+|Name   |Type   |Description
+//-------------
+|id|String|Unique id
+|name|String|Name of a related item
+|categories|List<**CHCategory**>|List of categories
+|===
+
+=== CHCategory
+
+[options="header",cols="1,1,2"]
+|===
+|Name   |Type   |Description
+//-------------
+|id|String|Unique id
+|name|String|Category name
+|description|String|Description of the category
+|isEnabled|boolean|Flag to enable or disable a category
+|lastModified|Date|Last time when the Category was modified
+|===
+
+Four types of requests are defined:
 
 	* *repositories*
 
@@ -266,6 +290,12 @@ Three types of requests are defined:
 
 		** URL: http://[host:port]/api/v1/search
 		** Method: POST
+		
+	* *categories*
+
+		** URL: http://[host:port]/api/v1/configurations/categories
+		*** http://[host:port]/api/v1/configurations/categories/{Id}
+		** Method: GET
 
 === Repositories
 Gets a list of all the Data Assets
@@ -344,3 +374,44 @@ include::{snippets}/api/v1/search/no-data/http-response.adoc[]
 
 ===== Error
 include::{snippets}/api/v1/search/error/http-response.adoc[]
+
+
+=== Categories
+Gets the list of enabled categories.
+
+==== Request
+include::{snippets}/api/v1/configurations/categories/data-all/http-request.adoc[]
+
+==== cURL Sample
+include::{snippets}/api/v1/configurations/categories/data-all/curl-request.adoc[]
+
+==== Response
+
+===== Data available
+include::{snippets}/api/v1/configurations/categories/data-all/http-response.adoc[]
+
+===== No data avilable
+include::{snippets}/api/v1/configurations/categories/no-data-all/http-response.adoc[]
+
+===== Error
+include::{snippets}/api/v1/configurations/categories/error-all/http-response.adoc[]
+
+=== Category by ID
+Gets an enabled Dategory by its ID.
+
+==== Request
+include::{snippets}/api/v1/configurations/categories/data-id/http-request.adoc[]
+
+==== cURL Sample
+include::{snippets}/api/v1/configurations/categories/data-id/curl-request.adoc[]
+
+==== Response
+
+===== Data available
+include::{snippets}/api/v1/configurations/categories/data-id/http-response.adoc[]
+
+===== No data avilable
+include::{snippets}/api/v1/configurations/categories/no-data-id/http-response.adoc[]
+
+===== Error
+include::{snippets}/api/v1/configurations/categories/error-id/http-response.adoc[]
