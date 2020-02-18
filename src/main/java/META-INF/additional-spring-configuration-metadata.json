@@ -48,5 +48,25 @@
     "name": "datahub.ui.url.questring",
     "type": "java.lang.String",
     "description": "A description for 'datahub.ui.url.questring'"
+  },
+  {
+    "name": "codehub.webapi.es.host",
+    "type": "java.lang.String",
+    "description": "A description for 'codehub.webapi.es.host'"
+  },
+  {
+    "name": "codehub.webapi.configurations.index",
+    "type": "java.lang.String",
+    "description": "A description for 'codehub.webapi.configurations.index'"
+  },
+  {
+    "name": "codehub.webapi.configurations.default",
+    "type": "java.lang.String",
+    "description": "A description for 'codehub.webapi.configurations.default'"
+  },
+  {
+    "name": "codehub.webapi.es.host",
+    "type": "java.lang.String",
+    "description": "A description for 'codehub.webapi.es.host'"
   }
 ]}

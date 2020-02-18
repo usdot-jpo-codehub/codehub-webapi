@@ -513,6 +513,11 @@ class RepositoriesControllerTest {
 		codehubData.setSource("Github");
 		codehubData.setVisible(this.random.nextBoolean());
 
+		List<String> categories = new ArrayList<>();
+		categories.add(UUID.randomUUID().toString());
+		categories.add(UUID.randomUUID().toString());
+		codehubData.setCategories(categories);
+
 		return codehubData;
 	}
 
