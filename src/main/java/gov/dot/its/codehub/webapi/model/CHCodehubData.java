@@ -1,6 +1,7 @@
 package gov.dot.its.codehub.webapi.model;
 
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -13,6 +14,7 @@ public class CHCodehubData {
 	private Date lastModified;
 	private Date lastIngested;
 	private CHBadges badges;
+	private List<String> categories;
 
 	public CHCodehubData() {
 		this.badges = new CHBadges();
@@ -68,6 +70,12 @@ public class CHCodehubData {
 	}
 	public void setBadges(CHBadges badges) {
 		this.badges = badges;
+	}
+	public List<String> getCategories() {
+		return categories;
+	}
+	public void setCategories(List<String> categories) {
+		this.categories = categories;
 	}
 
 }

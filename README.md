@@ -55,6 +55,19 @@ curl 'http://example.com:3000/api/v1/search' -i -X POST \
 }'
 ```
 
+### Categories
+
+To list a set of repositories.
+
+  - Method: GET
+  - URL: http://[host:port]/api/v1/configurations/categories
+
+To get a set of repositories by it's id.
+
+  - Method: GET
+  - URL: http://[host:port]/api/v1/configurations/categories/{Id}
+
+
 ### Response
 The response object provides a general response information and the actual data is associated with the "result" property.
 
@@ -196,6 +209,7 @@ Content-Type: application/json
         "status" : "Active",
         "isFeatured" : true
       },
+      "categories" : [ "a73ea362-da1a-4c15-967f-d247eba50e0a", "1854ba95-021a-4257-8002-e940b6e2b63b" ],
       "isIngested" : true,
       "isIngestionEnabled" : true,
       "isVisible" : false
@@ -274,6 +288,36 @@ Content-Type: application/json
 }
 ```
 
+#### Categories Response
+Response sample
+
+```json
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "timestamp" : "2020-02-14T18:18:38Z",
+  "status" : "OK",
+  "code" : 200,
+  "path" : "http://localhost",
+  "verb" : "GET",
+  "traceid" : "20200214181838089",
+  "result" : [ {
+    "id" : "3b73cb2f-796e-408e-ad9f-9c2f6f292892",
+    "name" : "Category-82",
+    "description" : "This is the description",
+    "lastModified" : "2020-02-14T18:18:38.089+0000",
+    "isEnabled" : true
+  }, {
+    "id" : "fd84321f-1d33-49ef-aca3-65afc58fcfdc",
+    "name" : "Category-42",
+    "description" : "This is the description",
+    "lastModified" : "2020-02-14T18:18:38.089+0000",
+    "isEnabled" : true
+  } ]
+}
+```
+
 #### Search
 
 The search response will provide a list of repositories like is the case of the "repositories" endpoint.
@@ -331,7 +375,7 @@ It is important to setup the environment variables before to execute the applica
 ## Docker Support
 A [Docker](https://www.docker.com/) image can be build with the next command line.
 ```bash
-  docker build -t codehub-webapi:1.0.0 .
+  docker build -t codehub-webapi:1.2.0 .
 ```
 
 The following command with the correct values for the environment variable will start a Docker container.
@@ -343,7 +387,7 @@ docker run -p 3000:3000 --rm \
 -e "codehub.webapi.es.scheme=[SCHEME]" \
 -e "datahub.ui.url.endpoint=[DATAHUB-WEBHOST]" \
 -e "JAVA_OPTS=-Xmx512M -Xms512M" \
--t -i codehub-webapi:1.0.0
+-t -i codehub-webapi:1.2.0
 ```
 
 
