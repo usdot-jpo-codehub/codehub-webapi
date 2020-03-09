@@ -10,6 +10,9 @@ public class CHCategory {
 	private String description;
 	private boolean isEnabled;
 	private Date lastModified;
+	private boolean isPopular;
+	private Long orderPopular;
+	private String imageFileName;
 
 	public String getId() {
 		return id;
@@ -41,6 +44,25 @@ public class CHCategory {
 	}
 	public void setLastModified(Date lastModified) {
 		this.lastModified = lastModified;
+	}
+	@JsonProperty("isPopular")
+	public boolean isPopular() {
+		return isPopular;
+	}
+	public void setPopular(boolean isPopular) {
+		this.isPopular = isPopular;
+	}
+	public Long getOrderPopular() {
+		return orderPopular;
+	}
+	public void setOrderPopular(Long orderPopular) {
+		this.orderPopular = orderPopular;
+	}
+	public String getImageFileName() {
+		return imageFileName;
+	}
+	public void setImageFileName(String imageFileName) {
+		this.imageFileName = imageFileName;
 	}
 
 }
