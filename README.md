@@ -355,7 +355,7 @@ The API requires the following environment variables
 The API is a Java application and can be executed updating the values of the following command template.
 
 ```bash
-sh -c java -Djava.security.egd=file:/dev/./urandom -jar /codehub-webapi-1.0.0.jar"
+sh -c java -Djava.security.egd=file:/dev/./urandom -jar /codehub-webapi-1.3.0.jar"
 ```
 It is important to setup the environment variables before to execute the application.
 
@@ -375,7 +375,7 @@ It is important to setup the environment variables before to execute the applica
 ## Docker Support
 A [Docker](https://www.docker.com/) image can be build with the next command line.
 ```bash
-  docker build -t codehub-webapi:1.2.0 .
+  docker build -t codehub-webapi:latest .
 ```
 
 The following command with the correct values for the environment variable will start a Docker container.
@@ -387,7 +387,7 @@ docker run -p 3000:3000 --rm \
 -e "codehub.webapi.es.scheme=[SCHEME]" \
 -e "datahub.ui.url.endpoint=[DATAHUB-WEBHOST]" \
 -e "JAVA_OPTS=-Xmx512M -Xms512M" \
--t -i codehub-webapi:1.2.0
+-t -i codehub-webapi:latest
 ```
 
 
@@ -396,6 +396,8 @@ docker run -p 3000:3000 --rm \
   * Initial version
 * 1.1.0
   * Add related DataHub entries.
+* 1.3.0
+  * Popular category fields.
 
 ## Contact information
 Joe Doe : X@Y

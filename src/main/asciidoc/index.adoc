@@ -5,7 +5,7 @@
 = ITS CodeHub
 
 == Web API
-`version: 1.2.0`
+`version: 1.3.0`
 
 WebApi to interface ITS CodeHub https://www.elastic.co/products/enterprise-search[ElasticSearch] storage system.
 
@@ -13,10 +13,9 @@ WebApi to interface ITS CodeHub https://www.elastic.co/products/enterprise-searc
 === Change Log
 The changes are with reference to previous version
  
-`Previous version: 1.1.0`
+`Previous version: 1.2.0`
 
-* Addition of **configurations** end point, that provides the option of getting the list of **categories** or a single category identified by its ID (see: **CHCategory**).
-* Addition of **categories** to **CHCodehubData**
+* New field in Category structure to support Popular categories feature.
 
 The information is presented through an structure (CHRepository) that contains the following properties.
 
@@ -270,6 +269,9 @@ The information is presented through an structure (CHRepository) that contains t
 |description|String|Description of the category
 |isEnabled|boolean|Flag to enable or disable a category
 |lastModified|Date|Last time when the Category was modified
+|isPopular|boolean|Flag to mark a Category as popular
+|orderPopular|Long|Display order in the main user interface
+|imageFileName|String|Url to the image that will be used by a popular category.
 |===
 
 Four types of requests are defined:

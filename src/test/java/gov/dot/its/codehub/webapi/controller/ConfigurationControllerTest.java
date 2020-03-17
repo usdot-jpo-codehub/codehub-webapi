@@ -255,6 +255,9 @@ class ConfigurationControllerTest {
 		category.setEnabled(true);
 		category.setLastModified(new Date());
 		category.setName(String.format("Category-%s", random.nextInt(100)));
+		category.setPopular(true);
+		category.setOrderPopular(Long.valueOf(random.nextInt(10)));
+		category.setImageFileName(String.format("http://url.to.image/image-%s", random.nextInt(10)));
 
 		return category;
 	}
