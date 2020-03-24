@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import gov.dot.its.codehub.webapi.model.ApiResponse;
 import gov.dot.its.codehub.webapi.model.CHCategory;
+import gov.dot.its.codehub.webapi.model.CHEngagementPopup;
 import gov.dot.its.codehub.webapi.service.ConfigurationService;
 
 @CrossOrigin(maxAge = 3600)
@@ -35,6 +36,14 @@ public class ConfigurationController {
 	public ResponseEntity<ApiResponse<CHCategory>> category(HttpServletRequest request, @PathVariable(name = "id") String id) {
 
 		ApiResponse<CHCategory> apiResponse = configurationService.category(request, id);
+
+		return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+	}
+
+	@GetMapping(value="/v1/configurations/engagementpopups", headers="Accept=application/json", produces="application/json")
+	public ResponseEntity<ApiResponse<List<CHEngagementPopup>>> engagementpopups(HttpServletRequest request) {
+
+		ApiResponse<List<CHEngagementPopup>> apiResponse = configurationService.engagementpopups(request);
 
 		return new ResponseEntity<>(apiResponse, HttpStatus.OK);
 	}

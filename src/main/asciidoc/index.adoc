@@ -5,7 +5,7 @@
 = ITS CodeHub
 
 == Web API
-`version: 1.3.0`
+`version: 1.4.0`
 
 WebApi to interface ITS CodeHub https://www.elastic.co/products/enterprise-search[ElasticSearch] storage system.
 
@@ -13,9 +13,9 @@ WebApi to interface ITS CodeHub https://www.elastic.co/products/enterprise-searc
 === Change Log
 The changes are with reference to previous version
  
-`Previous version: 1.2.0`
+`Previous version: 1.3.0`
 
-* New field in Category structure to support Popular categories feature.
+* Support for Engagement Popups
 
 The information is presented through an structure (CHRepository) that contains the following properties.
 
@@ -256,6 +256,7 @@ The information is presented through an structure (CHRepository) that contains t
 |id|String|Unique id
 |name|String|Name of a related item
 |categories|List<**CHCategory**>|List of categories
+|engagementPopups|List<**CHEngagementPopup**>|List of categories
 |===
 
 === CHCategory
@@ -273,6 +274,20 @@ The information is presented through an structure (CHRepository) that contains t
 |orderPopular|Long|Display order in the main user interface
 |imageFileName|String|Url to the image that will be used by a popular category.
 |===
+
+*CHEngagementPopup*
+[options="header",cols="1,1,2"]
+|===
+|Name   |Type   |Description
+//-------------
+|id|String|UUID for the Engagement Popup (dynamically generated)
+|name|String|Engagement Popup Name.
+|description|String|Description for the Engagement Popup.
+|isActive|boolean|Flag that defines which of the Engagement Popup is active (just one for all the collection).
+|lastModified|Date|Last Date when the Engagement Popup was modified.
+|content|String|HTML source code that will be displayed in the Engagement Popup.
+|===
+
 
 Four types of requests are defined:
 
@@ -292,11 +307,16 @@ Four types of requests are defined:
 
 		** URL: http://[host:port]/api/v1/search
 		** Method: POST
-		
+
 	* *categories*
 
 		** URL: http://[host:port]/api/v1/configurations/categories
 		*** http://[host:port]/api/v1/configurations/categories/{Id}
+		** Method: GET
+
+	* *engagementpopups*
+
+		** URL: http://[host:port]/api/v1/configurations/engagementpopups
 		** Method: GET
 
 === Repositories
@@ -417,3 +437,24 @@ include::{snippets}/api/v1/configurations/categories/no-data-id/http-response.ad
 
 ===== Error
 include::{snippets}/api/v1/configurations/categories/error-id/http-response.adoc[]
+
+=== Engagement PopUps
+Gets the list of active Engagement Popups.
+
+==== Request
+include::{snippets}/api/v1/configurations/engagementpopups/data-all/http-request.adoc[]
+
+==== cURL Sample
+include::{snippets}/api/v1/configurations/engagementpopups/data-all/curl-request.adoc[]
+
+==== Response
+
+===== Data available
+include::{snippets}/api/v1/configurations/engagementpopups/data-all/http-response.adoc[]
+
+===== No data avilable
+include::{snippets}/api/v1/configurations/engagementpopups/no-data-all/http-response.adoc[]
+
+===== Error
+include::{snippets}/api/v1/configurations/engagementpopups/error-all/http-response.adoc[]
+

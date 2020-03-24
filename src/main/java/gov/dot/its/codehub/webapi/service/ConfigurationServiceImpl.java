@@ -19,6 +19,7 @@ import gov.dot.its.codehub.webapi.model.ApiError;
 import gov.dot.its.codehub.webapi.model.ApiMessage;
 import gov.dot.its.codehub.webapi.model.ApiResponse;
 import gov.dot.its.codehub.webapi.model.CHCategory;
+import gov.dot.its.codehub.webapi.model.CHEngagementPopup;
 import gov.dot.its.codehub.webapi.utils.ApiUtils;
 
 @Service
@@ -26,7 +27,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
 	private static final Logger logger = LoggerFactory.getLogger(ConfigurationServiceImpl.class);
 
-	private static final String MESSAGE_TEMPLATE = "%s : %s ";
+	private static final String MESSAGE_TEMPLATE = "{} : {} ";
 
 	@Autowired
 	private ConfigurationDao configurationDao;
@@ -52,12 +53,12 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
 			if (categories != null && !categories.isEmpty()) {
 				apiResponse.setResponse(HttpStatus.OK, categories, null, null, request);
-				logger.info(String.format(MESSAGE_TEMPLATE, RESPONSE_MSG,HttpStatus.OK.toString()+" "+ categories.size()));
+				logger.info(MESSAGE_TEMPLATE, RESPONSE_MSG,HttpStatus.OK.toString()+" "+ categories.size());
 				return apiResponse;
 			}
 
 			apiResponse.setResponse(HttpStatus.NO_CONTENT, null, null, null, request);
-			logger.info(String.format(MESSAGE_TEMPLATE, RESPONSE_MSG, HttpStatus.NO_CONTENT.toString()));
+			logger.info(MESSAGE_TEMPLATE, RESPONSE_MSG, HttpStatus.NO_CONTENT.toString());
 			return apiResponse;
 
 
@@ -82,12 +83,41 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
 			if (category != null) {
 				apiResponse.setResponse(HttpStatus.OK, category, messages, null, request);
-				logger.info(String.format(MESSAGE_TEMPLATE, RESPONSE_MSG,HttpStatus.OK.toString()));
+				logger.info(MESSAGE_TEMPLATE, RESPONSE_MSG,HttpStatus.OK.toString());
 				return apiResponse;
 			}
 
 			apiResponse.setResponse(HttpStatus.NOT_FOUND, null, null, null, request);
-			logger.info(String.format(MESSAGE_TEMPLATE, RESPONSE_MSG, HttpStatus.NOT_FOUND.toString()));
+			logger.info(MESSAGE_TEMPLATE, RESPONSE_MSG, HttpStatus.NOT_FOUND.toString());
+			return apiResponse;
+
+
+		} catch(ElasticsearchStatusException | IOException e) {
+			return apiResponse.setResponse(HttpStatus.INTERNAL_SERVER_ERROR, null, null, apiUtils.getErrorsFromException(errors, e), request);
+		}
+	}
+
+
+	@Override
+	public ApiResponse<List<CHEngagementPopup>> engagementpopups(HttpServletRequest request) {
+		logger.info("Request: Engagement Popups");
+		final String RESPONSE_MSG = "Response: GET Engagement Popups. ";
+
+		ApiResponse<List<CHEngagementPopup>> apiResponse = new ApiResponse<>();
+		List<ApiError> errors = new ArrayList<>();
+
+		try {
+
+			List<CHEngagementPopup> engagementPopups = configurationDao.getEngagementPopups();
+
+			if (engagementPopups != null && !engagementPopups.isEmpty()) {
+				apiResponse.setResponse(HttpStatus.OK, engagementPopups, null, null, request);
+				logger.info(MESSAGE_TEMPLATE, RESPONSE_MSG,HttpStatus.OK.toString()+" "+ engagementPopups.size());
+				return apiResponse;
+			}
+
+			apiResponse.setResponse(HttpStatus.NO_CONTENT, null, null, null, request);
+			logger.info(MESSAGE_TEMPLATE, RESPONSE_MSG, HttpStatus.NO_CONTENT.toString());
 			return apiResponse;
 
 

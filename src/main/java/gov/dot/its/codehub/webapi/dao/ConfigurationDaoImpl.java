@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.dot.its.codehub.webapi.model.CHCategory;
 import gov.dot.its.codehub.webapi.model.CHConfiguration;
+import gov.dot.its.codehub.webapi.model.CHEngagementPopup;
 
 
 @Repository
@@ -84,6 +85,23 @@ public class ConfigurationDaoImpl implements ConfigurationDao {
 		}
 
 		return null;
+	}
+
+	@Override
+	public List<CHEngagementPopup> getEngagementPopups() throws IOException {
+		GetRequest getRequest = new GetRequest(configurationsIndex, "_doc", configurationId);
+		GetResponse getResponse = restHighLevelClient.get(getRequest, RequestOptions.DEFAULT);
+		if (!getResponse.isExists()) {
+			return new ArrayList<>();
+		}
+
+		Map<String, Object> sourceMap = getResponse.getSourceAsMap();
+
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		CHConfiguration configuration = mapper.convertValue(sourceMap, CHConfiguration.class);
+
+		return configuration.getEngagementPopups().stream().filter(CHEngagementPopup::isActive).collect(Collectors.toList());
 	}
 
 }
