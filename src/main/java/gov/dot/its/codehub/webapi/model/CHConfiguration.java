@@ -7,6 +7,7 @@ public class CHConfiguration {
 	private String id;
 	private String name;
 	private List<CHCategory> categories;
+	private List<CHEngagementPopup> engagementPopups;
 
 	public CHConfiguration() {
 		this.categories = new ArrayList<>();
@@ -36,6 +37,14 @@ public class CHConfiguration {
 
 	public void setCategories(List<CHCategory> categories) {
 		this.categories = categories;
+	}
+
+	public List<CHEngagementPopup> getEngagementPopups() {
+		return engagementPopups;
+	}
+
+	public void setEngagementPopups(List<CHEngagementPopup> engagementPopups) {
+		this.engagementPopups = engagementPopups;
 	}
 
 }

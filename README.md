@@ -318,6 +318,31 @@ Content-Type: application/json
 }
 ```
 
+#### EngagementPopups Response
+Response sample
+
+```json
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "timestamp" : "2020-03-24T16:29:58Z",
+  "status" : "OK",
+  "code" : 200,
+  "path" : "http://localhost",
+  "verb" : "GET",
+  "traceid" : "20200324162958925",
+  "result" : [ {
+    "id" : "65d87f65-3416-40f0-9ecd-45bf155e5318",
+    "name" : "EngagementPopup",
+    "description" : "Description",
+    "lastModified" : 1585067398925,
+    "content" : "<h1>Content</h1>",
+    "isActive" : true
+  } ]
+}
+```
+
 #### Search
 
 The search response will provide a list of repositories like is the case of the "repositories" endpoint.
@@ -355,7 +380,7 @@ The API requires the following environment variables
 The API is a Java application and can be executed updating the values of the following command template.
 
 ```bash
-sh -c java -Djava.security.egd=file:/dev/./urandom -jar /codehub-webapi-1.3.0.jar"
+sh -c java -Djava.security.egd=file:/dev/./urandom -jar /codehub-webapi-1.4.0.jar"
 ```
 It is important to setup the environment variables before to execute the application.
 
@@ -398,6 +423,8 @@ docker run -p 3000:3000 --rm \
   * Add related DataHub entries.
 * 1.3.0
   * Popular category fields.
+* 1.4.0
+  * Engagement PopUps support.
 
 ## Contact information
 Joe Doe : X@Y
