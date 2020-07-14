@@ -27,7 +27,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
 	private static final Logger logger = LoggerFactory.getLogger(ConfigurationServiceImpl.class);
 
-	private static final String MESSAGE_TEMPLATE = "{} : {} {}";
+	private static final String MESSAGE_TEMPLATE = "%s : %s %s";
 
 	@Autowired
 	private ConfigurationDao configurationDao;
@@ -50,15 +50,16 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 		try {
 
 			List<CHCategory> categories = configurationDao.getCategories();
-
+			String msg = String.format(MESSAGE_TEMPLATE, RESPONSE_MSG, HttpStatus.NO_CONTENT.toString(), "");
 			if (categories != null && !categories.isEmpty()) {
+				msg = String.format(MESSAGE_TEMPLATE, RESPONSE_MSG, HttpStatus.OK.toString(), categories.size());
 				apiResponse.setResponse(HttpStatus.OK, categories, null, null, request);
-				logger.info(MESSAGE_TEMPLATE, RESPONSE_MSG, HttpStatus.OK.toString(), categories.size());
+				logger.info(msg);
 				return apiResponse;
 			}
 
 			apiResponse.setResponse(HttpStatus.NO_CONTENT, null, null, null, request);
-			logger.info(MESSAGE_TEMPLATE, RESPONSE_MSG, HttpStatus.NO_CONTENT.toString(), "");
+			logger.info(msg);
 			return apiResponse;
 
 
@@ -80,15 +81,16 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 		try {
 
 			CHCategory category = configurationDao.getCategoryById(id);
-
+			String msg = String.format(MESSAGE_TEMPLATE, RESPONSE_MSG, HttpStatus.NOT_FOUND.toString(), "");
 			if (category != null) {
+				msg = String.format(MESSAGE_TEMPLATE, RESPONSE_MSG, HttpStatus.OK.toString(), "");
 				apiResponse.setResponse(HttpStatus.OK, category, messages, null, request);
-				logger.info(MESSAGE_TEMPLATE, RESPONSE_MSG, HttpStatus.OK.toString(), "");
+				logger.info(msg);
 				return apiResponse;
 			}
 
 			apiResponse.setResponse(HttpStatus.NOT_FOUND, null, null, null, request);
-			logger.info(MESSAGE_TEMPLATE, RESPONSE_MSG, HttpStatus.NOT_FOUND.toString(), "");
+			logger.info(msg);
 			return apiResponse;
 
 
@@ -109,15 +111,16 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 		try {
 
 			List<CHEngagementPopup> engagementPopups = configurationDao.getEngagementPopups();
-
+			String msg = String.format(MESSAGE_TEMPLATE, RESPONSE_MSG, HttpStatus.NO_CONTENT.toString(), "");
 			if (engagementPopups != null && !engagementPopups.isEmpty()) {
+				msg = String.format(MESSAGE_TEMPLATE, RESPONSE_MSG,HttpStatus.OK.toString(), engagementPopups.size());
 				apiResponse.setResponse(HttpStatus.OK, engagementPopups, null, null, request);
-				logger.info(MESSAGE_TEMPLATE, RESPONSE_MSG,HttpStatus.OK.toString(), engagementPopups.size());
+				logger.info(msg);
 				return apiResponse;
 			}
 
 			apiResponse.setResponse(HttpStatus.NO_CONTENT, null, null, null, request);
-			logger.info(MESSAGE_TEMPLATE, RESPONSE_MSG, HttpStatus.NO_CONTENT.toString(), "");
+			logger.info(msg);
 			return apiResponse;
 
 
