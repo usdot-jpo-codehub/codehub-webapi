@@ -20,7 +20,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -66,7 +66,7 @@ import gov.dot.its.codehub.webapi.service.RepositoriesService;
 @WebMvcTest(RepositoriesController.class)
 @AutoConfigureRestDocs(outputDir = "target/generated-snippets", uriHost="example.com", uriPort=3000, uriScheme="http")
 @SuppressWarnings({"squid:S00116","squid:S00100","squid:S00117"})
-class RepositoriesControllerTest {
+public class RepositoriesControllerTest {
 
 	private static final String TEST_DATAASSETS_URL = "%s/v1/repositories";
 	private static final String TEST_METRICS_URL = "%s/v1/metrics";
@@ -95,7 +95,7 @@ class RepositoriesControllerTest {
 	}
 
 	@Test
-	void testRepositoriesData() throws Exception { //NOSONAR
+	public void testRepositoriesData() throws Exception { //NOSONAR
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
 
@@ -136,7 +136,7 @@ class RepositoriesControllerTest {
 	}
 
 	@Test
-	void testRepositoriesNoData() throws Exception { //NOSONAR
+	public void testRepositoriesNoData() throws Exception { //NOSONAR
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
 
@@ -174,7 +174,7 @@ class RepositoriesControllerTest {
 	}
 
 	@Test
-	void testRepositoriesError() throws Exception { //NOSONAR
+	public void testRepositoriesError() throws Exception { //NOSONAR
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
 
@@ -214,7 +214,7 @@ class RepositoriesControllerTest {
 	}
 
 	@Test
-	void testMetricsData() throws Exception { //NOSONAR
+	public void testMetricsData() throws Exception { //NOSONAR
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
 
@@ -254,7 +254,7 @@ class RepositoriesControllerTest {
 	}
 
 	@Test
-	void testMetricsNoData() throws Exception { //NOSONAR
+	public void testMetricsNoData() throws Exception { //NOSONAR
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
 
@@ -292,7 +292,7 @@ class RepositoriesControllerTest {
 	}
 
 	@Test
-	void testMetricsError() throws Exception { //NOSONAR
+	public void testMetricsError() throws Exception { //NOSONAR
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
 
@@ -332,7 +332,7 @@ class RepositoriesControllerTest {
 	}
 
 	@Test
-	void testSearchData() throws Exception { //NOSONAR
+	public void testSearchData() throws Exception { //NOSONAR
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("POST");
 
@@ -378,7 +378,7 @@ class RepositoriesControllerTest {
 	}
 
 	@Test
-	void testSearchNoData() throws Exception { //NOSONAR
+	public void testSearchNoData() throws Exception { //NOSONAR
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("POST");
 
@@ -421,7 +421,7 @@ class RepositoriesControllerTest {
 	}
 
 	@Test
-	void testSearchError() throws Exception { //NOSONAR
+	public void testSearchError() throws Exception { //NOSONAR
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("POST");
 
