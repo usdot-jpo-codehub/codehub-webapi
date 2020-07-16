@@ -2,6 +2,8 @@ package gov.dot.its.codehub.webapi.controller;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.Mockito.when;
@@ -129,9 +131,9 @@ public class RepositoriesControllerTest {
 		ApiResponse<List<CHRepository>> responseApi = objectMapper.readValue(objString, valueType);
 
 		assertEquals(HttpStatus.OK.value(), responseApi.getCode());
-		assertTrue(responseApi.getErrors() == null);
-		assertTrue(responseApi.getMessages() == null);
-		assertTrue(responseApi.getResult() != null);
+		assertNull(responseApi.getErrors());
+		assertNull(responseApi.getMessages());
+		assertNotNull(responseApi.getResult());
 
 	}
 
@@ -168,9 +170,9 @@ public class RepositoriesControllerTest {
 		ApiResponse<List<CHRepository>> responseApi = objectMapper.readValue(objString, valueType);
 
 		assertEquals(HttpStatus.NO_CONTENT.value(), responseApi.getCode());
-		assertTrue(responseApi.getErrors() == null);
-		assertTrue(responseApi.getResult() == null);
-		assertTrue(responseApi.getMessages() == null);
+		assertNull(responseApi.getErrors());
+		assertNull(responseApi.getResult());
+		assertNull(responseApi.getMessages());
 	}
 
 	@Test
@@ -208,9 +210,9 @@ public class RepositoriesControllerTest {
 		ApiResponse<List<CHRepository>> responseApi = objectMapper.readValue(objString, valueType);
 
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), responseApi.getCode());
-		assertTrue(responseApi.getResult() == null);
-		assertTrue(responseApi.getErrors() != null);
-		assertTrue(responseApi.getMessages() == null);
+		assertNull(responseApi.getResult());
+		assertNotNull(responseApi.getErrors());
+		assertNull(responseApi.getMessages());
 	}
 
 	@Test
@@ -248,9 +250,9 @@ public class RepositoriesControllerTest {
 		ApiResponse<CHMetrics> responseApi = objectMapper.readValue(objString, valueType);
 
 		assertEquals(HttpStatus.OK.value(), responseApi.getCode());
-		assertTrue(responseApi.getResult() != null);
-		assertTrue(responseApi.getErrors() == null);
-		assertTrue(responseApi.getMessages() == null);
+		assertNotNull(responseApi.getResult());
+		assertNull(responseApi.getErrors());
+		assertNull(responseApi.getMessages());
 	}
 
 	@Test
@@ -286,9 +288,9 @@ public class RepositoriesControllerTest {
 		ApiResponse<CHMetrics> responseApi = objectMapper.readValue(objString, valueType);
 
 		assertEquals(HttpStatus.NO_CONTENT.value(), responseApi.getCode());
-		assertTrue(responseApi.getErrors() == null);
-		assertTrue(responseApi.getResult() == null);
-		assertTrue(responseApi.getMessages() == null);
+		assertNull(responseApi.getErrors());
+		assertNull(responseApi.getResult());
+		assertNull(responseApi.getMessages());
 	}
 
 	@Test
@@ -326,9 +328,9 @@ public class RepositoriesControllerTest {
 		ApiResponse<CHMetrics> responseApi = objectMapper.readValue(objString, valueType);
 
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), responseApi.getCode());
-		assertTrue(responseApi.getResult() == null);
-		assertTrue(responseApi.getMessages() == null);
-		assertTrue(responseApi.getErrors() != null);
+		assertNull(responseApi.getResult());
+		assertNull(responseApi.getMessages());
+		assertNotNull(responseApi.getErrors());
 	}
 
 	@Test
@@ -372,9 +374,9 @@ public class RepositoriesControllerTest {
 		ApiResponse<List<CHRepository>> responseApi = objectMapper.readValue(objString, valueType);
 
 		assertEquals(HttpStatus.OK.value(), responseApi.getCode());
-		assertTrue(responseApi.getResult() != null);
-		assertTrue(responseApi.getMessages() == null);
-		assertTrue(responseApi.getErrors() == null);
+		assertNotNull(responseApi.getResult());
+		assertNull(responseApi.getMessages());
+		assertNull(responseApi.getErrors());
 	}
 
 	@Test
@@ -415,9 +417,9 @@ public class RepositoriesControllerTest {
 		ApiResponse<List<CHRepository>> responseApi = objectMapper.readValue(objString, valueType);
 
 		assertEquals(HttpStatus.NO_CONTENT.value(), responseApi.getCode());
-		assertTrue(responseApi.getResult() == null);
-		assertTrue(responseApi.getErrors() == null);
-		assertTrue(responseApi.getMessages() == null);
+		assertNull(responseApi.getResult());
+		assertNull(responseApi.getErrors());
+		assertNull(responseApi.getMessages());
 	}
 
 	@Test
@@ -460,9 +462,9 @@ public class RepositoriesControllerTest {
 		ApiResponse<List<CHRepository>> responseApi = objectMapper.readValue(objString, valueType);
 
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), responseApi.getCode());
-		assertTrue(responseApi.getResult() == null);
-		assertTrue(responseApi.getErrors() != null);
-		assertTrue(responseApi.getMessages() == null);
+		assertNull(responseApi.getResult());
+		assertNotNull(responseApi.getErrors());
+		assertNull(responseApi.getMessages());
 	}
 
 	private List<CHRepository> generateFakeRepositories() {
