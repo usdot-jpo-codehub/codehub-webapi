@@ -34,7 +34,7 @@ public class RepositoriesServiceImpl implements RepositoriesService {
 
 	private static final Logger logger = LoggerFactory.getLogger(RepositoriesServiceImpl.class);
 
-	private static final String MESSAGE_TEMPLATE = "%s : %s ";
+	private static final String MESSAGE_TEMPLATE = "%s : %s %s";
 
 	@Value("${codehub.webapi.es.limit}")
 	private int esDefaultLimit;
@@ -59,20 +59,22 @@ public class RepositoriesServiceImpl implements RepositoriesService {
 		String owner = apiUtils.getQueryParamString(params, "owner", null);
 		String order = apiUtils.getQueryParamString(params, "order", "desc");
 
-		logger.info(String.format("GET Repositories: limit=%s, rank=%s, owner=%s", String.valueOf(limit), rank, owner));
+		String msg = apiUtils.stringFormat("GET Repositories: limit=%s, rank=%s, owner=%s", String.valueOf(limit), rank, owner);
+		logger.info(msg);
 
 		try {
 			List<CHRepository> data = repositoriesDao.getRepositories(limit, rank, owner, order);
-
+			msg = apiUtils.stringFormat(MESSAGE_TEMPLATE, HttpStatus.NO_CONTENT, "[]", "");
 			if (data != null && !data.isEmpty()) {
-				logger.info(String.format(MESSAGE_TEMPLATE, HttpStatus.OK, String.valueOf(data.size())));
+				msg = apiUtils.stringFormat(MESSAGE_TEMPLATE, HttpStatus.OK, String.valueOf(data.size()), "");
+				logger.info(msg);
 				return apiResponse.setResponse(HttpStatus.OK, data, null, null, request);
 			}
-			logger.info(String.format(MESSAGE_TEMPLATE, HttpStatus.NO_CONTENT, "[]"));
+			logger.info(msg);
 			return apiResponse.setResponse(HttpStatus.NO_CONTENT, null, null, null, request);
 
 		} catch(ElasticsearchStatusException | IOException e) {
-			logger.info(String.format(MESSAGE_TEMPLATE, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
+			logger.info(apiUtils.stringFormat(MESSAGE_TEMPLATE, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
 			return apiResponse.setResponse(HttpStatus.INTERNAL_SERVER_ERROR, null, null, apiUtils.getErrorsFromException(errors, e), request);
 		}
 
@@ -83,9 +85,11 @@ public class RepositoriesServiceImpl implements RepositoriesService {
 		ApiResponse<List<CHRepository>> apiResponse = new ApiResponse<>();
 		List<ApiError> errors = new ArrayList<>();
 		List<ApiMessage> messages = new ArrayList<>();
-		logger.info(String.format(MESSAGE_TEMPLATE, "Get Repositories by IDs", ids));
+		String msg = apiUtils.stringFormat(MESSAGE_TEMPLATE, "Get Repositories by IDs", String.join(",", ids));
+		logger.info(msg);
 		if (ids.length == 0) {
-			logger.info(String.format(MESSAGE_TEMPLATE, HttpStatus.NO_CONTENT, ids));
+			msg = apiUtils.stringFormat(MESSAGE_TEMPLATE, HttpStatus.NO_CONTENT, String.join(",", ids));
+			logger.info(msg);
 			return apiResponse.setResponse(HttpStatus.NO_CONTENT, null, null, null, request);
 		}
 
@@ -94,23 +98,25 @@ public class RepositoriesServiceImpl implements RepositoriesService {
 		for(String id: ids) {
 			try {
 				CHRepository repository = repositoriesDao.getRepository(id);
+				msg = apiUtils.stringFormat(MESSAGE_TEMPLATE, HttpStatus.OK, id);
 				if(repository != null) {
-					logger.info(String.format(MESSAGE_TEMPLATE, HttpStatus.OK, id));
-					messages.add(new ApiMessage(String.format(MESSAGE_TEMPLATE, HttpStatus.OK, id)));
+					logger.info(msg);
+					messages.add(new ApiMessage(msg));
 
 					repository.setRelated(this.getRelatedInformation(id));
 
 					repositories.add(repository);
 				} else {
 					partialContent = true;
-					logger.info(String.format(MESSAGE_TEMPLATE, HttpStatus.NO_CONTENT, id));
-					messages.add(new ApiMessage(String.format(MESSAGE_TEMPLATE, HttpStatus.NO_CONTENT, id)));
+					msg = apiUtils.stringFormat(MESSAGE_TEMPLATE, HttpStatus.NO_CONTENT, id);
+					logger.info(msg);
+					messages.add(new ApiMessage(msg));
 				}
 
 
 			} catch(ElasticsearchStatusException | IOException e) {
-				logger.info(String.format(MESSAGE_TEMPLATE, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
-				errors.add(new ApiError(String.format("%s : %s : %s", HttpStatus.INTERNAL_SERVER_ERROR, id, e.getMessage())));
+				logger.info(apiUtils.stringFormat(MESSAGE_TEMPLATE, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
+				errors.add(new ApiError(apiUtils.stringFormat(MESSAGE_TEMPLATE, HttpStatus.INTERNAL_SERVER_ERROR, id, e.getMessage())));
 			}
 		}
 
@@ -131,22 +137,25 @@ public class RepositoriesServiceImpl implements RepositoriesService {
 
 		try {
 			List<CHRepository> repositories = repositoriesDao.getRepositoriesMetrics(esDefaultLimit, owners);
+			String msg;
 			if(repositories == null || repositories.isEmpty()) {
-				logger.info(String.format(MESSAGE_TEMPLATE, HttpStatus.NO_CONTENT, "Repository data not available."));
+				msg = apiUtils.stringFormat(MESSAGE_TEMPLATE, HttpStatus.NO_CONTENT, "Repository data not available.");
+				logger.info(msg);
 				return apiResponse.setResponse(HttpStatus.NO_CONTENT, null, null, null, request);
 			}
 
 			CHMetrics metrics = this.calculateMetrics(repositories);
 			if (metrics == null) {
-				logger.info(String.format(MESSAGE_TEMPLATE, HttpStatus.NO_CONTENT, "Empty metrics data."));
+				msg = apiUtils.stringFormat(MESSAGE_TEMPLATE, HttpStatus.NO_CONTENT, "Empty metrics data.");
+				logger.info(msg);
 				return apiResponse.setResponse(HttpStatus.NO_CONTENT, null, null, null, request);
 			}
-
-			logger.info(String.format("%s : %s %s", HttpStatus.OK, "Metrics", owners == null ? "" : " Owner: "+String.join(", ", owners)));
+			msg = apiUtils.stringFormat(MESSAGE_TEMPLATE, HttpStatus.OK, "Metrics", owners == null ? "" : " Owner: "+String.join(", ", owners));
+			logger.info(msg);
 			return apiResponse.setResponse(HttpStatus.OK, metrics, null, null, request);
 
 		} catch(ElasticsearchStatusException | IOException e) {
-			logger.info(String.format(MESSAGE_TEMPLATE, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
+			logger.info(apiUtils.stringFormat(MESSAGE_TEMPLATE, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
 			return apiResponse.setResponse(HttpStatus.INTERNAL_SERVER_ERROR, null, null, apiUtils.getErrorsFromException(errors, e), request);
 		}
 	}
@@ -243,10 +252,11 @@ public class RepositoriesServiceImpl implements RepositoriesService {
 		ApiResponse<List<CHRepository>> apiResponse = new ApiResponse<>();
 		List<ApiError> errors = new ArrayList<>();
 		List<ApiMessage> messages = new ArrayList<>();
-		logger.info("Search request");
+		String msg = "Search request";
+		logger.info(msg);
 
 		if (StringUtils.isEmpty(chSearchRequest.getTerm())) {
-			String msg = String.format(MESSAGE_TEMPLATE, HttpStatus.NO_CONTENT, "Empty search term");
+			msg = apiUtils.stringFormat(MESSAGE_TEMPLATE, HttpStatus.NO_CONTENT, "Empty search term");
 			logger.info(msg);
 			messages.add(new ApiMessage(msg));
 			return apiResponse.setResponse(HttpStatus.NO_CONTENT, null, messages, null, request);
@@ -255,16 +265,17 @@ public class RepositoriesServiceImpl implements RepositoriesService {
 		try {
 			List<CHRepository> repositories = repositoriesDao.searchRepositories(chSearchRequest);
 			if(repositories == null || repositories.isEmpty()) {
-				logger.info(String.format(MESSAGE_TEMPLATE, HttpStatus.NO_CONTENT, "Repository data not available."));
+				msg = apiUtils.stringFormat(MESSAGE_TEMPLATE, HttpStatus.NO_CONTENT, "Repository data not available.");
+				logger.info(msg);
 				return apiResponse.setResponse(HttpStatus.NO_CONTENT, null, null, null, request);
 			}
-			String msg = String.format(MESSAGE_TEMPLATE, HttpStatus.OK, repositories.size());
+			msg = apiUtils.stringFormat(MESSAGE_TEMPLATE, HttpStatus.OK, repositories.size());
 			logger.info(msg);
 			messages.add(new ApiMessage(msg));
 			return apiResponse.setResponse(HttpStatus.OK, repositories, messages, null, request);
 
 		} catch(ElasticsearchStatusException | IOException e) {
-			logger.info(String.format(MESSAGE_TEMPLATE, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
+			logger.info(apiUtils.stringFormat(MESSAGE_TEMPLATE, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
 			return apiResponse.setResponse(HttpStatus.INTERNAL_SERVER_ERROR, null, null, apiUtils.getErrorsFromException(errors, e), request);
 		}
 	}

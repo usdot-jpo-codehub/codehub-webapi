@@ -1,7 +1,8 @@
 package gov.dot.its.codehub.webapi.controller;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -16,7 +17,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -43,7 +44,7 @@ import gov.dot.its.codehub.webapi.service.ConfigurationService;
 @RunWith(SpringRunner.class)
 @WebMvcTest(ConfigurationController.class)
 @AutoConfigureRestDocs(outputDir = "target/generated-snippets", uriHost="example.com", uriPort=3000, uriScheme="http")
-class ConfigurationControllerTest {
+public class ConfigurationControllerTest {
 
 	private static final String TEST_CATEGORIES_URL = "%s/v1/configurations/categories";
 	private static final String TEST_CATEGORY_URL = "%s/v1/configurations/categories/:ID";
@@ -71,7 +72,7 @@ class ConfigurationControllerTest {
 	}
 
 	@Test
-	void testCategoriesOk() throws Exception { //NOSONAR
+	public void testCategoriesOk() throws Exception { //NOSONAR
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
 
@@ -91,13 +92,13 @@ class ConfigurationControllerTest {
 		ApiResponse<List<CHCategory>> responseApi = objectMapper.readValue(objString, valueType);
 
 		assertEquals(HttpStatus.OK.value(), responseApi.getCode());
-		assertTrue(responseApi.getErrors() == null);
-		assertTrue(responseApi.getMessages() == null);
-		assertTrue(responseApi.getResult() != null);
+		assertNull(responseApi.getErrors());
+		assertNull(responseApi.getMessages());
+		assertNotNull(responseApi.getResult());
 	}
 
 	@Test
-	void testCategoriesNoData() throws Exception { //NOSONAR
+	public void testCategoriesNoData() throws Exception { //NOSONAR
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
 
@@ -115,13 +116,13 @@ class ConfigurationControllerTest {
 		ApiResponse<List<CHCategory>> responseApi = objectMapper.readValue(objString, valueType);
 
 		assertEquals(HttpStatus.NO_CONTENT.value(), responseApi.getCode());
-		assertTrue(responseApi.getResult() == null);
-		assertTrue(responseApi.getErrors() == null);
-		assertTrue(responseApi.getMessages() == null);
+		assertNull(responseApi.getResult());
+		assertNull(responseApi.getErrors());
+		assertNull(responseApi.getMessages());
 	}
 
 	@Test
-	void testCategoriesError() throws Exception { //NOSONAR
+	public void testCategoriesError() throws Exception { //NOSONAR
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
 
@@ -141,13 +142,13 @@ class ConfigurationControllerTest {
 		ApiResponse<List<CHCategory>> responseApi = objectMapper.readValue(objString, valueType);
 
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), responseApi.getCode());
-		assertTrue(responseApi.getResult() == null);
-		assertTrue(responseApi.getMessages() == null);
-		assertTrue(responseApi.getErrors() != null);
+		assertNull(responseApi.getResult());
+		assertNull(responseApi.getMessages());
+		assertNotNull(responseApi.getErrors());
 	}
 
 	@Test
-	void testCategoryOk() throws Exception { //NOSONAR
+	public void testCategoryOk() throws Exception { //NOSONAR
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
 
@@ -167,13 +168,13 @@ class ConfigurationControllerTest {
 		ApiResponse<CHCategory> responseApi = objectMapper.readValue(objString, valueType);
 
 		assertEquals(HttpStatus.OK.value(), responseApi.getCode());
-		assertTrue(responseApi.getResult() != null);
-		assertTrue(responseApi.getErrors() == null);
-		assertTrue(responseApi.getMessages() == null);
+		assertNotNull(responseApi.getResult());
+		assertNull(responseApi.getErrors());
+		assertNull(responseApi.getMessages());
 	}
 
 	@Test
-	void testCategoryNoData() throws Exception { //NOSONAR
+	public void testCategoryNoData() throws Exception { //NOSONAR
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
 
@@ -191,13 +192,13 @@ class ConfigurationControllerTest {
 		ApiResponse<CHCategory> responseApi = objectMapper.readValue(objString, valueType);
 
 		assertEquals(HttpStatus.NOT_FOUND.value(), responseApi.getCode());
-		assertTrue(responseApi.getResult() == null);
-		assertTrue(responseApi.getMessages() == null);
-		assertTrue(responseApi.getErrors() == null);
+		assertNull(responseApi.getResult());
+		assertNull(responseApi.getMessages());
+		assertNull(responseApi.getErrors());
 	}
 
 	@Test
-	void testCategoryError() throws Exception { //NOSONAR
+	public void testCategoryError() throws Exception { //NOSONAR
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
 
@@ -218,13 +219,13 @@ class ConfigurationControllerTest {
 		ApiResponse<CHCategory> responseApi = objectMapper.readValue(objString, valueType);
 
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), responseApi.getCode());
-		assertTrue(responseApi.getErrors() != null);
-		assertTrue(responseApi.getResult() == null);
-		assertTrue(responseApi.getMessages() == null);
+		assertNotNull(responseApi.getErrors());
+		assertNull(responseApi.getResult());
+		assertNull(responseApi.getMessages());
 	}
 
 	@Test
-	void testEngagementPopupOk() throws Exception { //NOSONAR
+	public void testEngagementPopupOk() throws Exception { //NOSONAR
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
 
@@ -243,14 +244,14 @@ class ConfigurationControllerTest {
 		TypeReference<ApiResponse<List<CHEngagementPopup>>> valueType = new TypeReference<ApiResponse<List<CHEngagementPopup>>>() {};
 		ApiResponse<List<CHEngagementPopup>> responseApi = objectMapper.readValue(objString, valueType);
 
-		assertTrue(responseApi.getErrors() == null);
-		assertTrue(responseApi.getMessages() == null);
-		assertTrue(responseApi.getResult() != null);
+		assertNull(responseApi.getErrors());
+		assertNull(responseApi.getMessages());
+		assertNotNull(responseApi.getResult());
 		assertEquals(HttpStatus.OK.value(), responseApi.getCode());
 	}
 
 	@Test
-	void testEngagementPopupNoData() throws Exception { //NOSONAR
+	public void testEngagementPopupNoData() throws Exception { //NOSONAR
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
 
@@ -267,14 +268,14 @@ class ConfigurationControllerTest {
 		TypeReference<ApiResponse<List<CHEngagementPopup>>> valueType = new TypeReference<ApiResponse<List<CHEngagementPopup>>>() {};
 		ApiResponse<List<CHEngagementPopup>> responseApi = objectMapper.readValue(objString, valueType);
 
-		assertTrue(responseApi.getResult() == null);
-		assertTrue(responseApi.getErrors() == null);
-		assertTrue(responseApi.getMessages() == null);
+		assertNull(responseApi.getResult());
+		assertNull(responseApi.getErrors());
+		assertNull(responseApi.getMessages());
 		assertEquals(HttpStatus.NO_CONTENT.value(), responseApi.getCode());
 	}
 
 	@Test
-	void testEngagementPopupError() throws Exception { //NOSONAR
+	public void testEngagementPopupError() throws Exception { //NOSONAR
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
 
@@ -293,10 +294,10 @@ class ConfigurationControllerTest {
 		TypeReference<ApiResponse<List<CHEngagementPopup>>> valueType = new TypeReference<ApiResponse<List<CHEngagementPopup>>>() {};
 		ApiResponse<List<CHEngagementPopup>> responseApi = objectMapper.readValue(objString, valueType);
 
-		assertTrue(responseApi.getResult() == null);
-		assertTrue(responseApi.getMessages() == null);
+		assertNull(responseApi.getResult());
+		assertNull(responseApi.getMessages());
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), responseApi.getCode());
-		assertTrue(responseApi.getErrors() != null);
+		assertNotNull(responseApi.getErrors());
 	}
 
 

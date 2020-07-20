@@ -99,8 +99,8 @@ public class ApiResponse<T> {
 		return this;
 	}
 	private String buildRequestPath(HttpServletRequest request) {
-		String requestUrl = request.getRequestURL().toString();
-		requestUrl += request.getQueryString() != null ? "?"+request.getQueryString(): "";
+		String requestUrl = request.getRequestURL().toString().replaceAll("[\n|\r|\t]", "");
+		requestUrl += request.getQueryString() != null ? "?" + request.getQueryString().replaceAll("[\n|\r|\t]", "") : "";
 		return requestUrl;
 	}
 }
