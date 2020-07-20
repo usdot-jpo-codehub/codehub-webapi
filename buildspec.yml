@@ -20,6 +20,7 @@ phases:
       - docker build -t $IMAGE_URI:$IMAGE_TAG .
   post_build:
     commands:
+      - echo $CODEBUILD_GIT_BRANCH
       - |
         if [ "$CODEBUILD_GIT_BRANCH" = "master" ] || [ "$CODEBUILD_GIT_BRANCH" = "development" ]; then
           docker push "$IMAGE_URI:$IMAGE_TAG";

@@ -1,7 +1,8 @@
 package gov.dot.its.codehub.webapi.controller;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.Mockito.when;
@@ -20,7 +21,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -66,7 +67,7 @@ import gov.dot.its.codehub.webapi.service.RepositoriesService;
 @WebMvcTest(RepositoriesController.class)
 @AutoConfigureRestDocs(outputDir = "target/generated-snippets", uriHost="example.com", uriPort=3000, uriScheme="http")
 @SuppressWarnings({"squid:S00116","squid:S00100","squid:S00117"})
-class RepositoriesControllerTest {
+public class RepositoriesControllerTest {
 
 	private static final String TEST_DATAASSETS_URL = "%s/v1/repositories";
 	private static final String TEST_METRICS_URL = "%s/v1/metrics";
@@ -95,7 +96,7 @@ class RepositoriesControllerTest {
 	}
 
 	@Test
-	void testRepositoriesData() throws Exception { //NOSONAR
+	public void testRepositoriesData() throws Exception { //NOSONAR
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
 
@@ -129,14 +130,14 @@ class RepositoriesControllerTest {
 		ApiResponse<List<CHRepository>> responseApi = objectMapper.readValue(objString, valueType);
 
 		assertEquals(HttpStatus.OK.value(), responseApi.getCode());
-		assertTrue(responseApi.getErrors() == null);
-		assertTrue(responseApi.getMessages() == null);
-		assertTrue(responseApi.getResult() != null);
+		assertNull(responseApi.getErrors());
+		assertNull(responseApi.getMessages());
+		assertNotNull(responseApi.getResult());
 
 	}
 
 	@Test
-	void testRepositoriesNoData() throws Exception { //NOSONAR
+	public void testRepositoriesNoData() throws Exception { //NOSONAR
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
 
@@ -168,13 +169,13 @@ class RepositoriesControllerTest {
 		ApiResponse<List<CHRepository>> responseApi = objectMapper.readValue(objString, valueType);
 
 		assertEquals(HttpStatus.NO_CONTENT.value(), responseApi.getCode());
-		assertTrue(responseApi.getErrors() == null);
-		assertTrue(responseApi.getResult() == null);
-		assertTrue(responseApi.getMessages() == null);
+		assertNull(responseApi.getErrors());
+		assertNull(responseApi.getResult());
+		assertNull(responseApi.getMessages());
 	}
 
 	@Test
-	void testRepositoriesError() throws Exception { //NOSONAR
+	public void testRepositoriesError() throws Exception { //NOSONAR
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
 
@@ -208,13 +209,13 @@ class RepositoriesControllerTest {
 		ApiResponse<List<CHRepository>> responseApi = objectMapper.readValue(objString, valueType);
 
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), responseApi.getCode());
-		assertTrue(responseApi.getResult() == null);
-		assertTrue(responseApi.getErrors() != null);
-		assertTrue(responseApi.getMessages() == null);
+		assertNull(responseApi.getResult());
+		assertNotNull(responseApi.getErrors());
+		assertNull(responseApi.getMessages());
 	}
 
 	@Test
-	void testMetricsData() throws Exception { //NOSONAR
+	public void testMetricsData() throws Exception { //NOSONAR
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
 
@@ -248,13 +249,13 @@ class RepositoriesControllerTest {
 		ApiResponse<CHMetrics> responseApi = objectMapper.readValue(objString, valueType);
 
 		assertEquals(HttpStatus.OK.value(), responseApi.getCode());
-		assertTrue(responseApi.getResult() != null);
-		assertTrue(responseApi.getErrors() == null);
-		assertTrue(responseApi.getMessages() == null);
+		assertNotNull(responseApi.getResult());
+		assertNull(responseApi.getErrors());
+		assertNull(responseApi.getMessages());
 	}
 
 	@Test
-	void testMetricsNoData() throws Exception { //NOSONAR
+	public void testMetricsNoData() throws Exception { //NOSONAR
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
 
@@ -286,13 +287,13 @@ class RepositoriesControllerTest {
 		ApiResponse<CHMetrics> responseApi = objectMapper.readValue(objString, valueType);
 
 		assertEquals(HttpStatus.NO_CONTENT.value(), responseApi.getCode());
-		assertTrue(responseApi.getErrors() == null);
-		assertTrue(responseApi.getResult() == null);
-		assertTrue(responseApi.getMessages() == null);
+		assertNull(responseApi.getErrors());
+		assertNull(responseApi.getResult());
+		assertNull(responseApi.getMessages());
 	}
 
 	@Test
-	void testMetricsError() throws Exception { //NOSONAR
+	public void testMetricsError() throws Exception { //NOSONAR
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
 
@@ -326,13 +327,13 @@ class RepositoriesControllerTest {
 		ApiResponse<CHMetrics> responseApi = objectMapper.readValue(objString, valueType);
 
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), responseApi.getCode());
-		assertTrue(responseApi.getResult() == null);
-		assertTrue(responseApi.getMessages() == null);
-		assertTrue(responseApi.getErrors() != null);
+		assertNull(responseApi.getResult());
+		assertNull(responseApi.getMessages());
+		assertNotNull(responseApi.getErrors());
 	}
 
 	@Test
-	void testSearchData() throws Exception { //NOSONAR
+	public void testSearchData() throws Exception { //NOSONAR
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("POST");
 
@@ -372,13 +373,13 @@ class RepositoriesControllerTest {
 		ApiResponse<List<CHRepository>> responseApi = objectMapper.readValue(objString, valueType);
 
 		assertEquals(HttpStatus.OK.value(), responseApi.getCode());
-		assertTrue(responseApi.getResult() != null);
-		assertTrue(responseApi.getMessages() == null);
-		assertTrue(responseApi.getErrors() == null);
+		assertNotNull(responseApi.getResult());
+		assertNull(responseApi.getMessages());
+		assertNull(responseApi.getErrors());
 	}
 
 	@Test
-	void testSearchNoData() throws Exception { //NOSONAR
+	public void testSearchNoData() throws Exception { //NOSONAR
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("POST");
 
@@ -415,13 +416,13 @@ class RepositoriesControllerTest {
 		ApiResponse<List<CHRepository>> responseApi = objectMapper.readValue(objString, valueType);
 
 		assertEquals(HttpStatus.NO_CONTENT.value(), responseApi.getCode());
-		assertTrue(responseApi.getResult() == null);
-		assertTrue(responseApi.getErrors() == null);
-		assertTrue(responseApi.getMessages() == null);
+		assertNull(responseApi.getResult());
+		assertNull(responseApi.getErrors());
+		assertNull(responseApi.getMessages());
 	}
 
 	@Test
-	void testSearchError() throws Exception { //NOSONAR
+	public void testSearchError() throws Exception { //NOSONAR
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("POST");
 
@@ -460,9 +461,9 @@ class RepositoriesControllerTest {
 		ApiResponse<List<CHRepository>> responseApi = objectMapper.readValue(objString, valueType);
 
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), responseApi.getCode());
-		assertTrue(responseApi.getResult() == null);
-		assertTrue(responseApi.getErrors() != null);
-		assertTrue(responseApi.getMessages() == null);
+		assertNull(responseApi.getResult());
+		assertNotNull(responseApi.getErrors());
+		assertNull(responseApi.getMessages());
 	}
 
 	private List<CHRepository> generateFakeRepositories() {
