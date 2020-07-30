@@ -10,10 +10,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -35,6 +32,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gov.dot.its.codehub.webapi.MockDataConfiguration;
 import gov.dot.its.codehub.webapi.model.ApiError;
 import gov.dot.its.codehub.webapi.model.ApiResponse;
 import gov.dot.its.codehub.webapi.model.CHCategory;
@@ -54,6 +52,8 @@ public class ConfigurationControllerTest {
 	private static final String MSG_INTERNAL_SERVER_ERROR = "Internal server error.";
 	private static final String TEST_ENGAGEMENTPOPUP_URL = "%s/v1/configurations/engagementpopups";
 
+	private MockDataConfiguration mockData;
+
 	@Autowired
 	private MockMvc mockMvc;
 
@@ -66,9 +66,8 @@ public class ConfigurationControllerTest {
 	@MockBean
 	private ConfigurationService configurationService;
 
-	private Random random;
 	public ConfigurationControllerTest() {
-		this.random = new Random();
+		this.mockData = new MockDataConfiguration();
 	}
 
 	@Test
@@ -76,7 +75,7 @@ public class ConfigurationControllerTest {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
 
-		List<CHCategory> categories = this.generateFakeCategories();
+		List<CHCategory> categories = this.mockData.generateFakeCategories();
 
 		ApiResponse<List<CHCategory>> apiResponse = new ApiResponse<>();
 		apiResponse.setResponse(HttpStatus.OK, categories, null, null, request);
@@ -152,7 +151,7 @@ public class ConfigurationControllerTest {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
 
-		CHCategory category = this.generateFakeCategory();
+		CHCategory category = this.mockData.generateFakeCategory(1);
 
 		ApiResponse<CHCategory> apiResponse = new ApiResponse<>();
 		apiResponse.setResponse(HttpStatus.OK, category, null, null, request);
@@ -229,7 +228,7 @@ public class ConfigurationControllerTest {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
 
-		List<CHEngagementPopup> engagementPopup = this.generateFakeEngagementPopups();
+		List<CHEngagementPopup> engagementPopup = this.mockData.generateFakeEngagementPopups();
 
 		ApiResponse<List<CHEngagementPopup>> apiResponse = new ApiResponse<>();
 		apiResponse.setResponse(HttpStatus.OK, engagementPopup, null, null, request);
@@ -317,49 +316,6 @@ public class ConfigurationControllerTest {
 								Preprocessors.removeHeaders(HEADER_HOST, HEADER_CONTENT_LENGTH)
 								)
 						));
-	}
-
-	private List<CHCategory> generateFakeCategories() {
-		List<CHCategory> categories = new ArrayList<>();
-		for(int i=0; i<2; i++) {
-			CHCategory category = generateFakeCategory();
-			categories.add(category);
-		}
-		return categories;
-	}
-
-	private List<CHEngagementPopup> generateFakeEngagementPopups() {
-		List<CHEngagementPopup> engagementPopups = new ArrayList<>();
-		CHEngagementPopup engagementPopup = generateFakeEngagementPopup();
-		engagementPopups.add(engagementPopup);
-
-		return engagementPopups;
-	}
-
-	private CHCategory generateFakeCategory() {
-		CHCategory category = new CHCategory();
-		category.setDescription("This is the description");
-		category.setId(UUID.randomUUID().toString());
-		category.setEnabled(true);
-		category.setLastModified(new Date());
-		category.setName(String.format("Category-%s", random.nextInt(100)));
-		category.setPopular(true);
-		category.setOrderPopular(Long.valueOf(random.nextInt(10)));
-		category.setImageFileName(String.format("http://url.to.image/image-%s", random.nextInt(10)));
-
-		return category;
-	}
-
-	private CHEngagementPopup generateFakeEngagementPopup() {
-		CHEngagementPopup engagementPopup = new CHEngagementPopup();
-		engagementPopup.setActive(true);
-		engagementPopup.setContent("<h1>Content</h1>");
-		engagementPopup.setDescription("Description");
-		engagementPopup.setId(UUID.randomUUID().toString());
-		engagementPopup.setLastModified(new Date());
-		engagementPopup.setName("EngagementPopup");
-
-		return engagementPopup;
 	}
 
 }

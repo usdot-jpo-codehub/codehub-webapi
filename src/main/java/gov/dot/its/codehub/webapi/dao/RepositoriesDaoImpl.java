@@ -10,7 +10,6 @@ import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -23,6 +22,7 @@ import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.ScoreSortBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -51,11 +51,8 @@ public class RepositoriesDaoImpl implements RepositoriesDao {
 	private static final String CODEHUBDATA_IS_INGESTED = "codehubData.isIngested";
 	private static final String CODEHUBDATA_IS_VISIBLE = "codehubData.isVisible";
 
-	private RestHighLevelClient restHighLevelClient;
-
-	public RepositoriesDaoImpl(RestHighLevelClient restHighLevelClient) {
-		this.restHighLevelClient = restHighLevelClient;
-	}
+	@Autowired
+	private ESClientDao esClientDao;
 
 	@Override
 	public List<CHRepository> getRepositories(int limit, String rank, String owner, String order) throws IOException {
@@ -74,7 +71,7 @@ public class RepositoriesDaoImpl implements RepositoriesDao {
 		}
 
 		searchRequest.source(searchSourceBuilder);
-		SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+		SearchResponse searchResponse = esClientDao.search(searchRequest, RequestOptions.DEFAULT);
 		SearchHit[] searchHits = searchResponse.getHits().getHits();
 		for (SearchHit hit : searchHits) {
 			Map<String, Object> sourceAsMap = hit.getSourceAsMap();
@@ -186,7 +183,7 @@ public class RepositoriesDaoImpl implements RepositoriesDao {
 		}
 
 		GetRequest getRequest = new GetRequest(reposIndex, "_doc", id);
-		GetResponse getResponse = restHighLevelClient.get(getRequest, RequestOptions.DEFAULT);
+		GetResponse getResponse = esClientDao.get(getRequest, RequestOptions.DEFAULT);
 		if(!getResponse.isExists()) {
 			return null;
 		}
@@ -210,7 +207,7 @@ public class RepositoriesDaoImpl implements RepositoriesDao {
 		searchSourceBuilder.fetchSource(includedFieldsMetrics, new String[] {});
 		searchRequest.source(searchSourceBuilder);
 
-		SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+		SearchResponse searchResponse = esClientDao.search(searchRequest, RequestOptions.DEFAULT);
 		SearchHit[] searchHits = searchResponse.getHits().getHits();
 
 		List<CHRepository> result = new ArrayList<>();
@@ -256,7 +253,7 @@ public class RepositoriesDaoImpl implements RepositoriesDao {
 		searchSourceBuilder.highlighter(highlightBuilder);
 		searchRequest.source(searchSourceBuilder);
 
-		SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+		SearchResponse searchResponse = esClientDao.search(searchRequest, RequestOptions.DEFAULT);
 		SearchHit[] searchHits = searchResponse.getHits().getHits();
 
 		List<CHRepository> result = new ArrayList<>();
