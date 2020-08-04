@@ -85,17 +85,26 @@ public class RepositoriesServiceImpl implements RepositoriesService {
 		ApiResponse<List<CHRepository>> apiResponse = new ApiResponse<>();
 		List<ApiError> errors = new ArrayList<>();
 		List<ApiMessage> messages = new ArrayList<>();
-		String msg = apiUtils.stringFormat(MESSAGE_TEMPLATE, "Get Repositories by IDs", String.join(",", ids));
+
+		List<String> validIdsList = new ArrayList<>();
+		for(String id : ids) {
+			if(!StringUtils.isEmpty(id)) {
+				validIdsList.add(id);
+			}
+		}
+		String[] validIds = validIdsList.toArray(new String[validIdsList.size()]);
+
+		String msg = apiUtils.stringFormat(MESSAGE_TEMPLATE, "Get Repositories by IDs", String.join(",", validIds));
 		logger.info(msg);
-		if (ids.length == 0) {
-			msg = apiUtils.stringFormat(MESSAGE_TEMPLATE, HttpStatus.NO_CONTENT, String.join(",", ids));
+		if (validIds.length == 0) {
+			msg = apiUtils.stringFormat(MESSAGE_TEMPLATE, HttpStatus.NO_CONTENT, "Invalid IDs");
 			logger.info(msg);
 			return apiResponse.setResponse(HttpStatus.NO_CONTENT, null, null, null, request);
 		}
 
 		List<CHRepository> repositories = new ArrayList<>();
 		boolean partialContent = false;
-		for(String id: ids) {
+		for(String id: validIds) {
 			try {
 				CHRepository repository = repositoriesDao.getRepository(id);
 				msg = apiUtils.stringFormat(MESSAGE_TEMPLATE, HttpStatus.OK, id);
@@ -138,11 +147,6 @@ public class RepositoriesServiceImpl implements RepositoriesService {
 		try {
 			List<CHRepository> repositories = repositoriesDao.getRepositoriesMetrics(esDefaultLimit, owners);
 			String msg;
-			if(repositories == null || repositories.isEmpty()) {
-				msg = apiUtils.stringFormat(MESSAGE_TEMPLATE, HttpStatus.NO_CONTENT, "Repository data not available.");
-				logger.info(msg);
-				return apiResponse.setResponse(HttpStatus.NO_CONTENT, null, null, null, request);
-			}
 
 			CHMetrics metrics = this.calculateMetrics(repositories);
 			if (metrics == null) {
