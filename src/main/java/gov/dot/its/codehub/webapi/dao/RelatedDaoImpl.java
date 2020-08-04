@@ -8,7 +8,7 @@ import java.util.Map;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestHighLevelClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
@@ -30,17 +30,14 @@ public class RelatedDaoImpl implements RelatedDao {
 	@Value("${datahub.ui.url.questring}")
 	private String datahubQueryString;
 
-	private RestHighLevelClient restHighLevelClient;
-
-	public RelatedDaoImpl(RestHighLevelClient restHighLevelClient) {
-		this.restHighLevelClient = restHighLevelClient;
-	}
+	@Autowired
+	ESClientDao esClientDao;
 
 	@Override
 	public List<RelatedItemModel> getRelatedItems(String id) throws IOException {
 
 		GetRequest getRequest = new GetRequest(relatedIndex, "_doc", id);
-		GetResponse getResponse = restHighLevelClient.get(getRequest, RequestOptions.DEFAULT);
+		GetResponse getResponse = esClientDao.get(getRequest, RequestOptions.DEFAULT);
 
 
 		if (getResponse.isExists()) {
