@@ -30,7 +30,7 @@ public class MockESUtils {
 		SearchHit hit = new SearchHit(sourceObject != null ? 1 : 0);
 		hit.sourceRef( source );
 		SearchHit[] searchHitArray = sourceObject != null ? new SearchHit[] { hit } : new SearchHit[] {};
-		SearchHits hits = new SearchHits( searchHitArray, searchHitArray.length, 1 );
+		SearchHits hits = new SearchHits( searchHitArray, null, 1 );
 		SearchResponseSections searchResponseSections = new SearchResponseSections( hits, null, null, false, null, null, 5 );
 		SearchResponse searchResponse = new SearchResponse(searchResponseSections, null, 8, 8, 0, 8, new ShardSearchFailure[] {}, null);
 
@@ -50,7 +50,8 @@ public class MockESUtils {
 		BytesReference source = new BytesArray(jsonObject);
 
 		Map<String, DocumentField> fields = sourceObject != null ? new HashMap<>() : null;
-		GetResult getResult = new GetResult(index, type, id, seqNo, primaryTerm, version, exists, source, fields);
+		Map<String, DocumentField> metaFields = sourceObject != null ? new HashMap<>() : null;
+		GetResult getResult = new GetResult(index, type, id, seqNo, primaryTerm, version, exists, source, fields, metaFields);
 		GetResponse getResponse = new GetResponse(getResult);
 		return getResponse;
 	}

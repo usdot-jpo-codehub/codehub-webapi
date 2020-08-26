@@ -1,0 +1,14 @@
+# This file lists the files and folders that do not belong in the Docker image
+.git/
+/.mvn
+/.vscode
+/.scannerwork
+.env
+.editorconfig
+.gitignore
+buildspec.yml
+Dockerfile
+sonar-project.properties
+mvnw
+mvnw.cmd
+/target
