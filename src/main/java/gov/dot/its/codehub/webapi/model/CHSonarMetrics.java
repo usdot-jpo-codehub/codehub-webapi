@@ -11,6 +11,7 @@ public class CHSonarMetrics {
 	private CHSonarMetric violations;
 	private CHSonarMetric vulnerabilities;
 	private CHSonarMetric complexity;
+	private CHSonarMetric ncloc;
 	
 	public CHSonarMetrics() {
 		this.bugs = new CHSonarMetric();
@@ -22,6 +23,7 @@ public class CHSonarMetrics {
 		this.violations = new CHSonarMetric();
 		this.vulnerabilities = new CHSonarMetric();
 		this.complexity = new CHSonarMetric();
+		this.ncloc = new CHSonarMetric();
 	}
 
 	public CHSonarMetric getBugs() {
@@ -78,6 +80,11 @@ public class CHSonarMetrics {
 	public void setComplexity(CHSonarMetric complexity) {
 		this.complexity = complexity;
 	}
-
+	public CHSonarMetric getNcloc() {
+		return ncloc;
+	}
+	public void setNcloc(CHSonarMetric ncloc) {
+		this.ncloc = ncloc;
+	}
 
 }
