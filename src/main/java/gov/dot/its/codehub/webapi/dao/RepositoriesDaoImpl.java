@@ -182,7 +182,7 @@ public class RepositoriesDaoImpl implements RepositoriesDao {
 			return null;
 		}
 
-		GetRequest getRequest = new GetRequest(reposIndex, "_doc", id);
+		GetRequest getRequest = new GetRequest(reposIndex, id);
 		GetResponse getResponse = esClientDao.get(getRequest, RequestOptions.DEFAULT);
 		if(!getResponse.isExists()) {
 			return null;

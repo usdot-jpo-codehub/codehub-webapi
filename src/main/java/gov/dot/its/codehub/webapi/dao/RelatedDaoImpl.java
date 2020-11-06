@@ -36,7 +36,7 @@ public class RelatedDaoImpl implements RelatedDao {
 	@Override
 	public List<RelatedItemModel> getRelatedItems(String id) throws IOException {
 
-		GetRequest getRequest = new GetRequest(relatedIndex, "_doc", id);
+		GetRequest getRequest = new GetRequest(relatedIndex, id);
 		GetResponse getResponse = esClientDao.get(getRequest, RequestOptions.DEFAULT);
 
 

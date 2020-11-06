@@ -35,7 +35,7 @@ public class ConfigurationDaoImpl implements ConfigurationDao {
 
 	@Override
 	public CHConfiguration getConfiguration() throws IOException {
-		GetRequest getRequest = new GetRequest(configurationsIndex, "_doc", configurationId);
+		GetRequest getRequest = new GetRequest(configurationsIndex, configurationId);
 		GetResponse getResponse = esClientDao.get(getRequest, RequestOptions.DEFAULT);
 		if (!getResponse.isExists()) {
 			return null;
@@ -51,7 +51,7 @@ public class ConfigurationDaoImpl implements ConfigurationDao {
 
 	@Override
 	public List<CHCategory> getCategories() throws IOException {
-		GetRequest getRequest = new GetRequest(configurationsIndex, "_doc", configurationId);
+		GetRequest getRequest = new GetRequest(configurationsIndex, configurationId);
 		GetResponse getResponse = esClientDao.get(getRequest, RequestOptions.DEFAULT);
 		if (!getResponse.isExists()) {
 			return new ArrayList<>();
@@ -85,7 +85,7 @@ public class ConfigurationDaoImpl implements ConfigurationDao {
 
 	@Override
 	public List<CHEngagementPopup> getEngagementPopups() throws IOException {
-		GetRequest getRequest = new GetRequest(configurationsIndex, "_doc", configurationId);
+		GetRequest getRequest = new GetRequest(configurationsIndex, configurationId);
 		GetResponse getResponse = esClientDao.get(getRequest, RequestOptions.DEFAULT);
 		if (!getResponse.isExists()) {
 			return new ArrayList<>();
