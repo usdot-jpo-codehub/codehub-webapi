@@ -10,6 +10,7 @@ public class CHSourceData {
 	private long commits;
 	private long stars;
 	private long watchers;
+	private long forksCount;
 	private String description;
 	private String language;
 	private String name;
@@ -55,6 +56,14 @@ public class CHSourceData {
 
 	public void setWatchers(long watchers) {
 		this.watchers = watchers;
+	}
+
+	public long getForksCount() {
+		return forksCount;
+	}
+
+	public void setForksCount(long forksCount) {
+		this.forksCount = forksCount;
 	}
 
 	public String getDescription() {

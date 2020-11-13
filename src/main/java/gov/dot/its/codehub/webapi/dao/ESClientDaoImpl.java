@@ -1,7 +1,9 @@
 package gov.dot.its.codehub.webapi.dao;
 
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 
+import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchRequest;
@@ -21,12 +23,41 @@ public class ESClientDaoImpl implements ESClientDao {
 
 	@Override
 	public SearchResponse search(SearchRequest searchRequest, RequestOptions requestOptions) throws IOException {
-		return restHighLevelClient.search(searchRequest, requestOptions);
+		CompletableFuture<SearchResponse> cf = new CompletableFuture<>();
+		restHighLevelClient.searchAsync(searchRequest, requestOptions, new ActionListener<SearchResponse>(){
+
+			@Override
+			public void onResponse(SearchResponse response) {
+				cf.complete(response);
+			}
+
+			@Override
+			public void onFailure(Exception e) {
+				cf.completeExceptionally(e);
+			}
+		});
+		return cf.join();
 	}
 
 	@Override
 	public GetResponse get(GetRequest getRequest, RequestOptions requestOptions) throws IOException {
-		return restHighLevelClient.get(getRequest, requestOptions);
+
+		CompletableFuture<GetResponse> cf = new CompletableFuture<>();
+		restHighLevelClient.getAsync(getRequest, requestOptions, new ActionListener<GetResponse>(){
+
+			@Override
+			public void onResponse(GetResponse response) {
+				cf.complete(response);
+			}
+
+			@Override
+			public void onFailure(Exception e) {
+				cf.completeExceptionally(e);
+			}
+
+		} );
+
+		return cf.join();
 	}
 
 }
